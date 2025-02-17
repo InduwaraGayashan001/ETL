@@ -1,6 +1,6 @@
 # Categorizes a dataset based on a numeric field and specified ranges.
 # ```ballerina
-# record {}[] dataset = [{value: 10.5}, {value: 25.0}, {value: 5.3}];
+# record {}[] dataset = [{"value": 10.5}, {"value": 25.0}, {"value": 5.3}];
 # string fieldName = "value";
 # float[][] rangeArray = [[0.0, 10.0], [10.0, 20.0]];
 # record {}[][] categorized = check categorizeNumeric(dataset, fieldName, rangeArray);
