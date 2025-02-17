@@ -10,7 +10,7 @@
 # string fieldName = "age";
 # string operation = ">";
 # float value = 25;
-# [record {}[] olderThan25, record {}[] youngerOrEqual25] = check filterDataByRelativeExp(dataset, fieldName, operation, value);
+# [record {}[], record {}[]] [olderThan25, youngerOrEqual25] = check filterDataByRelativeExp(dataset, fieldName, operation, value);
 # ```
 #
 # + dataSet - Array of records containing numeric fields for comparison.
