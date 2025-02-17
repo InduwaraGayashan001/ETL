@@ -335,7 +335,7 @@ modules = [
 ]
 
 [[package]]
-org = "induwarag"
+org = "induwaragm"
 name = "etl"
 version = "0.1.0"
 dependencies = [
@@ -347,12 +347,12 @@ dependencies = [
 	{org = "ballerinax", name = "openai.chat"}
 ]
 modules = [
-	{org = "induwarag", packageName = "etl", moduleName = "etl"},
-	{org = "induwarag", packageName = "etl", moduleName = "etl.categorization"},
-	{org = "induwarag", packageName = "etl", moduleName = "etl.cleaning"},
-	{org = "induwarag", packageName = "etl", moduleName = "etl.enrichment"},
-	{org = "induwarag", packageName = "etl", moduleName = "etl.extraction"},
-	{org = "induwarag", packageName = "etl", moduleName = "etl.filtering"},
-	{org = "induwarag", packageName = "etl", moduleName = "etl.masking"}
+	{org = "induwaragm", packageName = "etl", moduleName = "etl"},
+	{org = "induwaragm", packageName = "etl", moduleName = "etl.categorization"},
+	{org = "induwaragm", packageName = "etl", moduleName = "etl.cleaning"},
+	{org = "induwaragm", packageName = "etl", moduleName = "etl.enrichment"},
+	{org = "induwaragm", packageName = "etl", moduleName = "etl.extraction"},
+	{org = "induwaragm", packageName = "etl", moduleName = "etl.filtering"},
+	{org = "induwaragm", packageName = "etl", moduleName = "etl.masking"}
 ]
 
