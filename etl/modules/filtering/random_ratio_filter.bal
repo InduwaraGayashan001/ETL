@@ -9,7 +9,7 @@ import ballerina/random;
 #     { "id": 4, "name": "David" }
 # ];
 # float ratio = 0.75;
-# [record {}[] part1, record {}[] part2] = check filterDataByRatio(dataset, ratio);
+# [record {}[], record {}[]] [part1, part2] = check filterDataByRatio(dataset, ratio);
 # ```
 #
 # + dataSet - Array of records to be split.
