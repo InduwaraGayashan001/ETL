@@ -4,13 +4,14 @@ import ballerina/lang.array;
 # Decrypts a dataset using AES-ECB decryption with a given Base64-encoded key and returns records of the specified type.
 #
 # ```ballerina
-# string[] encryptedData = [
-#     "sdfjsdlfjsdl==", 
-#     "j34nkj23n4k3=="
-# ];
-# string keyBase64 = "aGVsbG9zZWNyZXRrZXkxMjM0NTY=";
-# typedesc<record { string name; int age; }> dataType = record { string name; int age; };
-# record {}[] decryptedData = check decryptData(encryptedData, keyBase64, dataType);
+# 
+# type Person record {
+#   string name;
+#  int age;
+# };
+# string[] encryptedData = ["s8VbGE1kQdXTwp1tHECCBwKSDybVK86XAUqHjsNKiR8=", "030h3xL9he3/xeVIecdCZX7xxvBZHpgqcGYR6y4dIYY="];
+# string keyBase64 = "TgMtILI4IttHFilanAdZbw==";
+# record {}[] decryptedData = check decryptData(encryptedData, keyBase64, Person);
 # ```
 #
 # + dataSet - The dataset containing the Base64-encoded encrypted strings to be decrypted.
