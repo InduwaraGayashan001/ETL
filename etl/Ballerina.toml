@@ -1,5 +1,29 @@
 [package]
-org = "induwarag"
+org = "induwaragm"
 name = "etl"
 version = "0.1.0"
 distribution = "2201.11.0"
+
+[[package.modules]]
+name = "etl.extraction"
+export = true
+
+[[package.modules]]
+name = "etl.masking"
+export = true
+
+[[package.modules]]
+name = "etl.categorization"
+export = true
+
+[[package.modules]]
+name = "etl.filtering"
+export = true
+
+[[package.modules]]
+name = "etl.enrichment"
+export = true
+
+[[package.modules]]
+name = "etl.cleaning"
+export = true
