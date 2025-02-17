@@ -10,7 +10,7 @@ import ballerina/lang.regexp;
 # ];
 # string fieldName = "city";
 # regexp:RegExp regexPattern = re `^New.*$`;
-# [record {}[] matched, record {}[] nonMatched] = check filterDataByRegex(dataset, fieldName, regexPattern);
+# [record {}[], record {}[]] [matched, nonMatched] = check filterDataByRegex(dataset, fieldName, regexPattern);
 # ```
 #
 # + dataSet - Array of records to be filtered.
