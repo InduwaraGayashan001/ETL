@@ -17,3 +17,5 @@ This repository contains the following examples:
 
 1. **[Extract Unstructured Data](https://github.com/InduwaraGayashan001/ETL/tree/main/examples/extract-unstructured-data)**: Demonstrates how to extract and structure unstructured data into defined fields.
 2. **[Preprocess Customer Data](https://github.com/InduwaraGayashan001/ETL/tree/main/examples/preprocess-customer-data)**: Shows how to preprocess and clean customer data by handling null values, duplicates, and standardizing fields.
+3. **[Enrich Customer Data](https://github.com/InduwaraGayashan001/ETL/tree/main/examples/enrich-customer-data)**: Demonstrates how to enrich customer data by merging customer details from multiple CSV files and joining them with contact details.
+4. **[Filter Order Data](https://github.com/InduwaraGayashan001/ETL/tree/main/examples/filter-order-data)**: Shows how to filter order data based on price thresholds.
