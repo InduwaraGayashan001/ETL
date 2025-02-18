@@ -42,7 +42,7 @@ function testCategorizeRegexData() returns error? {
     ];
 
     record {}[][] categorized = check categorizeRegexData(dataset, fieldName, regexArray);
-    test:assertEquals(categorized, expected, msg = "Categorized output is incorrect");
+    test:assertEquals(categorized, expected);
 }
 
 @test:Config {}
@@ -62,5 +62,5 @@ function testCategorizeSemantic() returns error? {
     ];
 
     record {}[][] categorized = check categorizeSemantic(dataset, fieldName, categories);
-    test:assertEquals(categorized, expected, msg = "Categorized output is incorrect");
+    test:assertEquals(categorized, expected);
 }
