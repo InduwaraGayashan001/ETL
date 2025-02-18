@@ -13,7 +13,9 @@ public function handleWhiteSpaces(record {}[] dataSet) returns record {}[]|error
     do {
         foreach record {} data in dataSet {
             foreach string key in data.keys() {
-                data[key] = re `\s+`.replaceAll(data[key].toString(), " ").trim();
+                if data[key] is string{
+                    data[key] = re `\s+`.replaceAll(data[key].toString(), " ").trim();
+                }  
             }
         }
         return dataSet;
