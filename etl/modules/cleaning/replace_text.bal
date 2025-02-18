@@ -18,7 +18,7 @@ import ballerina/lang.regexp;
 # + searchValue - A regular expression to match text that will be replaced.
 # + replaceValue - The value that will replace the matched text.
 # + return - A new dataset with the replaced text in the specified field.
-public function repalaceText(record {}[] dataSet, string fieldName, regexp:RegExp searchValue, string replaceValue) returns record {}[]|error {
+public function replaceText(record {}[] dataSet, string fieldName, regexp:RegExp searchValue, string replaceValue) returns record {}[]|error {
     do {
         foreach record {} data in dataSet {
             string newData = searchValue.replace(data[fieldName].toString(), replaceValue);

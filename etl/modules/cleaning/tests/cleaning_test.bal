@@ -103,7 +103,7 @@ function testReplaceText() returns error? {
         {"name": "Charlie", "city": "Chicago"}
     ];
 
-    record {}[] result = check repalaceText(dataset, fieldName, searchValue, replaceValue);
+    record {}[] result = check replaceText(dataset, fieldName, searchValue, replaceValue);
     test:assertEquals(result, expected);
 }
 
