@@ -1,36 +1,44 @@
 import ballerina/crypto;
 import ballerina/lang.array;
 
-# Decrypts a dataset using AES-ECB decryption with a given Base64-encoded key and returns records of the specified type.
+# Decrypts specific fields of a dataset using AES-ECB decryption with a given Base64-encoded key.
 #
 # ```ballerina
-# 
-# type Person record {
-#   string name;
-#  int age;
-# };
-# string[] encryptedData = ["s8VbGE1kQdXTwp1tHECCBwKSDybVK86XAUqHjsNKiR8=", "030h3xL9he3/xeVIecdCZX7xxvBZHpgqcGYR6y4dIYY="];
-# string keyBase64 = "TgMtILI4IttHFilanAdZbw==";
-# record {}[] decryptedData = check decryptData(encryptedData, keyBase64, Person);
+# record {}[] encryptedDataset = [
+#     { "name": "U2FtcGxlTmFtZQ==", "age": "MjU=" },
+#     { "name": "Qm9i", "age": "MzA=" }
+# ];
+# string[] fieldNames = ["name", "age"];
+# string keyBase64 = "aGVsbG9zZWNyZXRrZXkxMjM0NTY=";
+# record {}[] decryptedData = check decryptData(encryptedDataset, fieldNames, keyBase64);
 # ```
 #
-# + dataSet - The dataset containing the Base64-encoded encrypted strings to be decrypted.
+# + dataset - The dataset containing records with Base64-encoded encrypted fields.
+# + fieldNames - An array of field names that should be decrypted.
 # + keyBase64 - The AES decryption key in Base64 format.
-# + dataType - The type descriptor of the record to be returned after decryption.
-# + return - An array of decrypted records in the specified `dataType`.
-public function decryptData(string[] dataSet, string keyBase64, typedesc<record {}> dataType) returns record {}[]|error {
+# + return - A dataset with the specified fields decrypted.
+function decryptData(record {}[] dataset, string[] fieldNames, string keyBase64) returns record {}[]|error {
     do {
         byte[] decryptKey = check array:fromBase64(keyBase64);
         record {}[] decryptededDataSet = [];
-
-        foreach int i in 0 ... dataSet.length() - 1 {
-            byte[] dataByte = check array:fromBase64(dataSet[i]);
-            byte[] plainText = check crypto:decryptAesEcb(dataByte, decryptKey);
-            string plainTextString = check string:fromBytes(plainText);
-            decryptededDataSet.push(check (check plainTextString.fromJsonString()).cloneWithType(dataType));
+        foreach record {} data in dataset {
+            record {} newData = {};
+            foreach string key in data.keys() {
+                if fieldNames.some(element => element == key) {
+                    byte[] dataByte = check array:fromBase64(data[key].toString());
+                    byte[] plainText = check crypto:decryptAesEcb(dataByte, decryptKey);
+                    string plainTextString = check string:fromBytes(plainText);
+                    newData[key] = plainTextString;
+                } else {
+                    newData[key] = data[key];
+                }
+            }
+            decryptededDataSet.push(newData);
         }
         return decryptededDataSet;
     } on fail error e {
         return e;
     }
 }
+
+// give field names as an array, set the defualt value to select all
