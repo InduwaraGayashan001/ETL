@@ -5,7 +5,7 @@ public enum Operation {
     NOT_EQUAL = "!=",
     GREATER_THAN_OR_EQUAL = ">=",
     LESS_THAN_OR_EQUAL = "<="
-    
+
 }
 
 # Filters a dataset based on a relative numeric comparison expression.
@@ -33,7 +33,7 @@ public function filterDataByRelativeExp(record {}[] dataset, string fieldName, O
         record {}[] matchedData = [];
         record {}[] nonMatchedData = [];
 
-        function (float fieldValue, float comparisonValue) returns boolean evaluateCondition = function(float fieldValue,  float comparisonValue) returns boolean {
+        function (float fieldValue, float comparisonValue) returns boolean evaluateCondition = function(float fieldValue, float comparisonValue) returns boolean {
             match operation {
                 GREATER_THAN => {
                     return fieldValue > value;
@@ -50,11 +50,11 @@ public function filterDataByRelativeExp(record {}[] dataset, string fieldName, O
                 EQUAL => {
                     return fieldValue == value;
                 }
-                _=> {
+                _ => {
                     return fieldValue != value;
                 }
             }
-             
+
         };
         foreach record {} data in dataset {
             float fieldValue = check data[fieldName].ensureType();
