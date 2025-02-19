@@ -21,7 +21,7 @@ function testStandardizeData() returns error? {
 }
 
 @test:Config {}
-function testGroupApproximateDuplicates() returns error? {
+function testGroupApproximateDuplicatess() returns error? {
     record {}[] dataset = [
         {"name": "Alice", "city": "New York"},
         {"name": "Bob", "city": "Boston"},
@@ -30,13 +30,21 @@ function testGroupApproximateDuplicates() returns error? {
         {"name": "Charlie", "city": "Los Angeles"},
         {"name": "charlie", "city": "los angeles - usa"}
     ];
-    record {}[][] expected = [
-        [{"name": "Alice", "city": "New York"},{"name": "Alice", "city": "new york"}],
-        [{"name": "Charlie", "city": "Los Angeles"},{"name": "charlie", "city": "los angeles - usa"}]
-    ];
 
-    record {}[][] result = check groupApproximateDuplicates(dataset);
-    test:assertEquals(result, expected);
+    DuplicateGroupingResult expected = {
+        uniqueRecords: [
+            {"name": "Bob", "city": "Boston"},
+            {"name": "John", "city": "Chicago"}
+        ],
+        duplicateGroups: [
+            [{"name": "Alice", "city": "New York"}, {"name": "Alice", "city": "new york"}],
+            [{"name": "Charlie", "city": "Los Angeles"}, {"name": "charlie", "city": "los angeles - usa"}]
+        ]
+    };
+
+    DuplicateGroupingResult result = check groupApproximateDuplicates(dataset);
+    test:assertEquals(result.uniqueRecords, expected.uniqueRecords);
+    test:assertEquals(result.duplicateGroups, expected.duplicateGroups);
 }
 
 @test:Config {}
