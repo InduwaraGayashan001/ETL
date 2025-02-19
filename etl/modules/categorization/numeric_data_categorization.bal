@@ -17,11 +17,11 @@ public function categorizeNumeric(record {}[] dataset, string fieldName, float[]
             categorizedData.push([]);
         }
         foreach record {} data in dataset {
-            float fieldValue = <float>data[fieldName];
+            float fieldValue = check data[fieldName].ensureType();
             boolean isCategorized = false;
             foreach float[] range in rangeArray {
                 if (fieldValue >= range[0] && fieldValue < range[1]) {
-                    categorizedData[<int>rangeArray.indexOf(range)].push(data);
+                    categorizedData[check rangeArray.indexOf(range).ensureType(int)].push(data);
                     isCategorized = true;
                     break;
                 }

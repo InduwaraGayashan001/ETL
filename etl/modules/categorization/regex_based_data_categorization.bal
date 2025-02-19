@@ -28,7 +28,7 @@ public function categorizeRegexData(record {}[] dataset, string fieldName, regex
             boolean isCategorized = false;
             foreach regexp:RegExp regex in regexArray {
                 if regex.isFullMatch((data[fieldName].toString())) {
-                    categorizedData[<int>regexArray.indexOf(regex)].push(data);
+                    categorizedData[check regexArray.indexOf(regex).ensureType(int)].push(data);
                     isCategorized = true;
                     break;
                 }
