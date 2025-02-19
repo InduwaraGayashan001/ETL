@@ -1,4 +1,4 @@
-import ballerina/regex;
+import ballerina/data.jsondata;
 import ballerinax/openai.chat;
 
 configurable string openAIKey = ?;
@@ -26,46 +26,25 @@ final chat:Client chatClient = check new ({
 # + return - A nested array of categorized records or an error if classification fails.
 public function categorizeSemantic(record {}[] dataSet, string fieldName, string[] categories) returns record {}[][]|error {
     do {
-        string[] valueArray = from record {} data in dataSet
-            select data[fieldName].toString();
-
         chat:CreateChatCompletionRequest request = {
             model: "gpt-4o",
             messages: [
                 {
                     "role": "user",
-                    "content": string `Classify each text in the array into one of the given category names.
-                                        - Data array : ${valueArray.toString()} 
-                                        - Category Names : ${categories.toString()}
-                                        Respond only the results as an array of category names corresponding to each text.
-                                        If a text does not match any of the provided categories, give the category name as 'Other' in the array.`
+                    "content": string `Classify the given dataset into one of the specified categories based on the provided field name.  
+                                        - Input Dataset: ${dataSet.toString()}  
+                                        - Categories: ${categories.toString()}  
+                                        - Field: ${fieldName}  
+                                        If a record does not belong to any category, place it in a separate dataset at the end.  
+                                        Respond only with an array of arrays of JSON objects without any formatting.  
+                                        Do not include any additional text, explanations, or variations.  `
                 }
             ]
         };
 
         chat:CreateChatCompletionResponse result = check chatClient->/chat/completions.post(request);
         string content = check result.choices[0].message?.content.ensureType();
-        string[] contentArray = re `,`.split(regex:replaceAll(content, "\"|'|\\[|\\]", "")).'map(element => element.trim()); //todo - jsonData
-
-        record {}[][] categorizedData = [];
-        foreach int i in 0 ... categories.length() {
-            categorizedData.push([]);
-        }
-
-        foreach int i in 0 ... dataSet.length() - 1 {
-            boolean isCategorized = false;
-            foreach string category in categories {
-                if (category.equalsIgnoreCaseAscii(contentArray[i])) {
-                    categorizedData[<int>categories.indexOf(category)].push(dataSet[i]);
-                    isCategorized = true;
-                    break;
-                }
-            }
-            if (!isCategorized) {
-                categorizedData[categories.length()].push(dataSet[i]);
-            }
-        }
-        return categorizedData;
+        return check jsondata:parseAsType(check content.fromJsonString());
     } on fail error e {
         return e;
     }

@@ -1,4 +1,4 @@
-import ballerina/regex;
+import ballerina/data.jsondata;
 import ballerinax/openai.chat;
 
 configurable string openAIKey = ?;
@@ -19,7 +19,7 @@ final chat:Client chatClient = check new ({ //todo
 # + dataSet - Array of unstructured string data (e.g., reviews or comments).
 # + fieldNames - Array of field names to map the extracted details.
 # + return - A record with extracted details mapped to the specified field names or an error if extraction fails.
-public function extractUnstructuredData(string[] dataSet, string[] fieldNames) returns record {}|error { // use string instead off an array
+public function extractUnstructuredData(string dataSet, string[] fieldNames) returns record {}|error {
     do {
 
         chat:CreateChatCompletionRequest request = {
@@ -30,8 +30,7 @@ public function extractUnstructuredData(string[] dataSet, string[] fieldNames) r
                     "content": string `Extract relevant details from the given string array and map them to the specified fields. 
                                     - Input Data : ${dataSet.toString()} 
                                     - Fields to extract: ${fieldNames.toString()}
-                                    Respond with a single string, where extracted field values are separated by '|'
-                                    Use the exact format: detail1, detail2, detail3,...|detail1, detail2, detail3,...|detail1, detail2, detail3,...  
+                                    Respond with a JSON object without any formatting.
                                     Do not include field names or any additional text, explanations, or variations.`
                 }
             ]
@@ -39,13 +38,7 @@ public function extractUnstructuredData(string[] dataSet, string[] fieldNames) r
 
         chat:CreateChatCompletionResponse result = check chatClient->/chat/completions.post(request);
         string content = check result.choices[0].message?.content.ensureType();
-        string[] contentArray = re `\|`.split(regex:replaceAll(content, "\"|'|\\[|\\]", "")).'map(element => element.trim()); //todo
-
-        record {} extractDetails = {};
-        foreach int i in 0 ... fieldNames.length() - 1 {
-            extractDetails[fieldNames[i]] = contentArray[i];
-        }
-        return extractDetails;
+        return check jsondata:parseAsType(check content.fromJsonString());
 
     } on fail error e {
         return e;

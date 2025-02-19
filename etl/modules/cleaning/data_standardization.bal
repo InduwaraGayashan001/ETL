@@ -1,4 +1,4 @@
-import ballerina/regex;
+import ballerina/data.jsondata;
 import ballerinax/openai.chat;
 
 configurable string openAIKey = ?;
@@ -22,24 +22,23 @@ final chat:Client chatClient = check new ({ //todo
 # record {}[] standardizedData = check standardizeData(dataset, fieldName, searchValue);
 # ```
 #
-# + dataSet - Array of records containing string values to be standardized.
+# + dataset - Array of records containing string values to be standardized.
 # + fieldName - Name of the string field to check for approximate matches.
 # + searchValue - The exact value to replace approximate matches.
 # + return - An updated dataset with standardized string values or an error if the operation fails.
-public function standardizeData(record {}[] dataSet, string fieldName, string searchValue) returns record {}[]|error {
+function standardizeData(record {}[] dataset, string fieldName, string searchValue) returns record {}[]|error {
     do {
-        string[] valueArray = from record {} data in dataSet
-            select data[fieldName].toString();
 
         chat:CreateChatCompletionRequest request = {
             model: "gpt-4o",
             messages: [
                 {
                     "role": "user",
-                    "content": string `Determine whether each text in the given array is an approximate duplicate of the provided search value.
-                                        - Input Dataset : ${valueArray.toString()}
-                                        - Search Value : ${searchValue}
-                                        Respond only with an array of 'yes' or 'no'.  
+                    "content": string ` Identify and replace any approximate matches of the given search value in the dataset with the standard value.  
+                                        - Input Dataset: ${dataset.toString()}  
+                                        - Field Name: ${fieldName}  
+                                        - Search Value: ${searchValue}  
+                                        Return only the standardized dataset as an array of JSON objects without any formatting .  
                                         Do not include any additional text, explanations, or variations.`
                 }
             ]
@@ -47,14 +46,8 @@ public function standardizeData(record {}[] dataSet, string fieldName, string se
 
         chat:CreateChatCompletionResponse result = check chatClient->/chat/completions.post(request);
         string content = check result.choices[0].message?.content.ensureType();
-        string[] contentArray = re `,`.split(regex:replaceAll(content, "\"|'|\\[|\\]", "")).'map(element => element.trim()); //todo
-
-        foreach int i in 0 ... dataSet.length() - 1 {
-            if contentArray[i] is "yes" {
-                dataSet[i][fieldName] = searchValue;
-            }
-        }
-        return dataSet;
+        record {}[] newDataset = check jsondata:parseAsType(check content.fromJsonString());
+        return newDataset;
     } on fail error e {
         return e;
     }
