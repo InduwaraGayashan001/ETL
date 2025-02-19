@@ -21,7 +21,7 @@ import ballerina/lang.regexp;
 public function replaceText(record {}[] dataSet, string fieldName, regexp:RegExp searchValue, string replaceValue) returns record {}[]|error {
     do {
         from record {} data in dataSet
-        let string newData = searchValue.replace(data[fieldName].toString(), replaceValue) //todo -use query exp
+        let string newData = searchValue.replace(data[fieldName].toString(), replaceValue)
         do {
             data[fieldName] = newData;
         };
