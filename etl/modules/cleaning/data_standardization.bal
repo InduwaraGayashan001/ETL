@@ -3,6 +3,12 @@ import ballerinax/openai.chat;
 
 configurable string openAIKey = ?;
 
+final chat:Client chatClient = check new ({ //todo
+    auth: {
+        token: openAIKey
+    }
+});
+
 # Standardizes a dataset by replacing approximate matches in a string field with a specified search value.
 # ```ballerina
 # record {}[] dataset = [
@@ -25,12 +31,6 @@ public function standardizeData(record {}[] dataSet, string fieldName, string se
         string[] valueArray = from record {} data in dataSet
             select data[fieldName].toString();
 
-        chat:Client chatClient = check new ({
-            auth: {
-                token: openAIKey
-            }
-        });
-
         chat:CreateChatCompletionRequest request = {
             model: "gpt-4o",
             messages: [
@@ -47,7 +47,7 @@ public function standardizeData(record {}[] dataSet, string fieldName, string se
 
         chat:CreateChatCompletionResponse result = check chatClient->/chat/completions.post(request);
         string content = check result.choices[0].message?.content.ensureType();
-        string[] contentArray = re `,`.split(regex:replaceAll(content, "\"|'|\\[|\\]", "")).'map(element => element.trim());
+        string[] contentArray = re `,`.split(regex:replaceAll(content, "\"|'|\\[|\\]", "")).'map(element => element.trim()); //todo
 
         foreach int i in 0 ... dataSet.length() - 1 {
             if contentArray[i] is "yes" {

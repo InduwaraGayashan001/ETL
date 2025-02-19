@@ -3,6 +3,12 @@ import ballerinax/openai.chat;
 
 configurable string openAIKey = ?;
 
+final chat:Client chatClient = check new ({ //todo
+    auth: {
+        token: openAIKey
+    }
+});
+
 # Extracts unstructured data from a string array and maps it to the specified fields.
 # ```ballerina
 # string[] reviews = ["The product is great, but it could be improved.", "Not bad, but needs some updates."];
@@ -13,13 +19,8 @@ configurable string openAIKey = ?;
 # + dataSet - Array of unstructured string data (e.g., reviews or comments).
 # + fieldNames - Array of field names to map the extracted details.
 # + return - A record with extracted details mapped to the specified field names or an error if extraction fails.
-public function extractUnstructuredData(string[] dataSet, string[] fieldNames) returns record {}|error {
+public function extractUnstructuredData(string[] dataSet, string[] fieldNames) returns record {}|error { // use string instead off an array
     do {
-        chat:Client chatClient = check new ({
-            auth: {
-                token: openAIKey
-            }
-        });
 
         chat:CreateChatCompletionRequest request = {
             model: "gpt-4o",
@@ -38,7 +39,7 @@ public function extractUnstructuredData(string[] dataSet, string[] fieldNames) r
 
         chat:CreateChatCompletionResponse result = check chatClient->/chat/completions.post(request);
         string content = check result.choices[0].message?.content.ensureType();
-        string[] contentArray = re `\|`.split(regex:replaceAll(content, "\"|'|\\[|\\]", "")).'map(element => element.trim());
+        string[] contentArray = re `\|`.split(regex:replaceAll(content, "\"|'|\\[|\\]", "")).'map(element => element.trim()); //todo
 
         record {} extractDetails = {};
         foreach int i in 0 ... fieldNames.length() - 1 {

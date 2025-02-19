@@ -16,12 +16,6 @@ import ballerinax/openai.chat;
 # + return - A dataset with approximate duplicates removed, keeping only the first occurrence of each duplicate record.
 public function removeApproximateDuplicates(record {}[] dataSet) returns record {}[]|error {
     do {
-        chat:Client chatClient = check new ({
-            auth: {
-                token: openAIKey
-            }
-        });
-
         chat:CreateChatCompletionRequest request = {
             model: "gpt-4o",
             messages: [
@@ -38,7 +32,7 @@ public function removeApproximateDuplicates(record {}[] dataSet) returns record 
 
         chat:CreateChatCompletionResponse response = check chatClient->/chat/completions.post(request);
         string content = check response.choices[0].message?.content.ensureType();
-        string[] contentArray = re `,`.split(regex:replaceAll(content, "\"|'|\\[|\\]", "")).'map(element => element.trim());
+        string[] contentArray = re `,`.split(regex:replaceAll(content, "\"|'|\\[|\\]", "")).'map(element => element.trim()); //todo
 
         return from record {} data in dataSet
             where contentArray[<int>dataSet.indexOf(data)] is "unique"
@@ -47,3 +41,5 @@ public function removeApproximateDuplicates(record {}[] dataSet) returns record 
         return e;
     }
 }
+//return two datasets
+//try to use an  util.bal in order to prevent repetition

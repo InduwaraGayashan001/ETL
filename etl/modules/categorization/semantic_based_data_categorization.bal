@@ -3,6 +3,12 @@ import ballerinax/openai.chat;
 
 configurable string openAIKey = ?;
 
+final chat:Client chatClient = check new ({
+    auth: {
+        token: openAIKey
+    }
+});
+
 # Categorizes a dataset based on a string field using semantic classification via OpenAI's GPT model.
 # ```ballerina
 # record {}[] dataset = [
@@ -23,12 +29,6 @@ public function categorizeSemantic(record {}[] dataSet, string fieldName, string
         string[] valueArray = from record {} data in dataSet
             select data[fieldName].toString();
 
-        chat:Client chatClient = check new ({
-            auth: {
-                token: openAIKey
-            }
-        });
-
         chat:CreateChatCompletionRequest request = {
             model: "gpt-4o",
             messages: [
@@ -45,7 +45,7 @@ public function categorizeSemantic(record {}[] dataSet, string fieldName, string
 
         chat:CreateChatCompletionResponse result = check chatClient->/chat/completions.post(request);
         string content = check result.choices[0].message?.content.ensureType();
-        string[] contentArray = re `,`.split(regex:replaceAll(content, "\"|'|\\[|\\]", "")).'map(element => element.trim());
+        string[] contentArray = re `,`.split(regex:replaceAll(content, "\"|'|\\[|\\]", "")).'map(element => element.trim()); //todo - jsonData
 
         record {}[][] categorizedData = [];
         foreach int i in 0 ... categories.length() {
