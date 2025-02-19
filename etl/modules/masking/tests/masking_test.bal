@@ -13,20 +13,23 @@ function testEncryptData() returns error? {
     ];
     string keyBase64 = "TgMtILI4IttHFilanAdZbw==";
 
-    string[] encryptedData = check encryptData(dataset, keyBase64);
+    record {}[] encryptedData = check encryptData(dataset, ["name", "age"], keyBase64);
     test:assertEquals(encryptedData.length(), dataset.length());
 }
 
 @test:Config {}
 function testDecryptData() returns error? {
-    string[] encryptedData = ["s8VbGE1kQdXTwp1tHECCBwKSDybVK86XAUqHjsNKiR8=", "030h3xL9he3/xeVIecdCZX7xxvBZHpgqcGYR6y4dIYY="];
+    record {}[] encryptedData = [
+        {"id": 1, "name": "kHKa63v98rbDm+FB2DJ3ig==", "age": "DwknVxmigukb2VBkDj2rHg=="},
+        {"id": 2, "name": "S0x+hpmvSOIT7UE8hOGZkA==", "age": "goBjsnnKAMRoEfkZsbRYwg=="}
+    ];
     string keyBase64 = "TgMtILI4IttHFilanAdZbw==";
 
     record {}[] expectedDecryptedData = [
-        {"name": "Alice", "age": 25},
-        {"name": "Bob", "age": 30}
+        {"id": 1, "name": "Alice", "age": "25"},
+        {"id": 2, "name": "Bob", "age": "30"}
     ];
 
-    record {}[] decryptedData = check decryptData(encryptedData, keyBase64, Person);
+    record {}[] decryptedData = check decryptData(encryptedData, ["name", "age"], keyBase64);
     test:assertEquals(decryptedData, expectedDecryptedData);
 }
