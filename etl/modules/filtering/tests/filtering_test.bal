@@ -47,7 +47,6 @@ function testFilterDataByRelativeExp() returns error? {
         {"id": 4, "name": "David", "age": 28}
     ];
     string fieldName = "age";
-    string operation = ">";
     float value = 25;
     record {}[] expectedOlderThan25 = [
         {"id": 2, "name": "Bob", "age": 30},
@@ -57,7 +56,7 @@ function testFilterDataByRelativeExp() returns error? {
         {"id": 1, "name": "Alice", "age": 25},
         {"id": 3, "name": "Charlie", "age": 22}
     ];
-    [record {}[], record {}[]] [olderThan25, youngerOrEqual25] = check filterDataByRelativeExp(dataset, fieldName, operation, value);
+    [record {}[], record {}[]] [olderThan25, youngerOrEqual25] = check filterDataByRelativeExp(dataset, fieldName, GREATER_THAN, value);
     test:assertEquals(olderThan25, expectedOlderThan25);
     test:assertEquals(youngerOrEqual25, expectedYoungerOrEqual25);
 }
