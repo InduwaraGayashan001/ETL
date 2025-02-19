@@ -20,10 +20,11 @@ import ballerina/lang.regexp;
 # + return - A new dataset with the replaced text in the specified field.
 public function replaceText(record {}[] dataSet, string fieldName, regexp:RegExp searchValue, string replaceValue) returns record {}[]|error {
     do {
-        foreach record {} data in dataSet {
-            string newData = searchValue.replace(data[fieldName].toString(), replaceValue);
+        from record {} data in dataSet
+        let string newData = searchValue.replace(data[fieldName].toString(), replaceValue) //todo -use query exp
+        do {
             data[fieldName] = newData;
-        }
+        };
         return dataSet;
     } on fail error e {
         return e;

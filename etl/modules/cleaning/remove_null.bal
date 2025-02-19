@@ -11,16 +11,14 @@
 # + dataSet - Array of records containing potential null or empty fields.
 # + return - A dataset with records containing null or empty string values removed.
 public function removeNull(record {}[] dataSet) returns record {}[]|error {
-
     do {
         function (record {} data) returns boolean isContainNull = function(record {} data) returns boolean {
             boolean containNull = false;
-            foreach string key in data.keys() {
-                if data[key] is null || data[key].toString().trim() == "" {
-                    containNull = true;
-                    break;
-                }
-            }
+            from string key in data.keys()
+            where data[key] is null || data[key].toString().trim() == ""
+            do {
+                containNull = true;
+            };
             return containNull;
         };
         return from record {} data in dataSet
@@ -29,5 +27,4 @@ public function removeNull(record {}[] dataSet) returns record {}[]|error {
     } on fail error e {
         return e;
     }
-
 }
