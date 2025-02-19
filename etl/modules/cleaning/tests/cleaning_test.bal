@@ -21,20 +21,21 @@ function testStandardizeData() returns error? {
 }
 
 @test:Config {}
-function testRemoveApproximateDuplicates() returns error? {
+function testGroupApproximateDuplicates() returns error? {
     record {}[] dataset = [
         {"name": "Alice", "city": "New York"},
-        {"name": "Bob", "city": "New York"},
+        {"name": "Bob", "city": "Boston"},
+        {"name": "John", "city": "Chicago"},
         {"name": "Alice", "city": "new york"},
-        {"name": "Charlie", "city": "Los Angeles"}
+        {"name": "Charlie", "city": "Los Angeles"},
+        {"name": "charlie", "city": "los angeles - usa"}
     ];
-    record {}[] expected = [
-        {"name": "Alice", "city": "New York"},
-        {"name": "Bob", "city": "New York"},
-        {"name": "Charlie", "city": "Los Angeles"}
+    record {}[][] expected = [
+        [{"name": "Alice", "city": "New York"},{"name": "Alice", "city": "new york"}],
+        [{"name": "Charlie", "city": "Los Angeles"},{"name": "charlie", "city": "los angeles - usa"}]
     ];
 
-    record {}[] result = check removeApproximateDuplicates(dataset);
+    record {}[][] result = check groupApproximateDuplicates(dataset);
     test:assertEquals(result, expected);
 }
 
