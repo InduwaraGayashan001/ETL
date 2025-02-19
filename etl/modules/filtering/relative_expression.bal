@@ -1,3 +1,13 @@
+public enum Operation {
+    GREATER_THAN = ">",
+    LESS_THAN = "<",
+    EQUAL = "==",
+    NOT_EQUAL = "!=",
+    GREATER_THAN_OR_EQUAL = ">=",
+    LESS_THAN_OR_EQUAL = "<="
+    
+}
+
 # Filters a dataset based on a relative numeric comparison expression.
 #
 # ```ballerina
@@ -13,44 +23,42 @@
 # [record {}[], record {}[]] [olderThan25, youngerOrEqual25] = check filterDataByRelativeExp(dataset, fieldName, operation, value);
 # ```
 #
-# + dataSet - Array of records containing numeric fields for comparison.
+# + dataset - Array of records containing numeric fields for comparison.
 # + fieldName - Name of the field to evaluate.
-# + operation - Comparison operator (`>`, `<`, `>=`, `<=`, `==`, `!=`).
+# + operation - Comparison operator (`>`, `<`, `>=`, `<=`, `==`, `!=`). 
 # + value - Numeric value to compare against.
 # + return - A tuple with two subsets: one that matches the condition and one that does not.
-public function filterDataByRelativeExp(record {}[] dataSet, string fieldName, string operation, float value) returns [record {}[], record {}[]]|error {
+public function filterDataByRelativeExp(record {}[] dataset, string fieldName, Operation operation, float value) returns [record {}[], record {}[]]|error {
     do {
         record {}[] matchedData = [];
         record {}[] nonMatchedData = [];
 
-        function (float fieldValue, string relativeOperation, float comparisonValue) returns boolean|error evaluateCondition = function(float fieldValue, string relativeOperation, float comparisonValue) returns boolean|error {
+        function (float fieldValue, float comparisonValue) returns boolean evaluateCondition = function(float fieldValue,  float comparisonValue) returns boolean {
             match operation {
-                ">" => {
+                GREATER_THAN => {
                     return fieldValue > value;
                 }
-                "<" => {
+                LESS_THAN => {
                     return fieldValue < value;
                 }
-                ">=" => {
+                GREATER_THAN_OR_EQUAL => {
                     return fieldValue >= value;
                 }
-                "<=" => {
+                LESS_THAN_OR_EQUAL => {
                     return fieldValue <= value;
                 }
-                "==" => {
+                EQUAL => {
                     return fieldValue == value;
                 }
-                "!=" => {
+                _=> {
                     return fieldValue != value;
                 }
-                _ => {
-                    return error("Unsupported operation for numeric values");
-                }
             }
+             
         };
-        foreach record {} data in dataSet {
-            float fieldValue = <float>data[fieldName];
-            boolean conditionResult = check evaluateCondition(fieldValue, operation, value);
+        foreach record {} data in dataset {
+            float fieldValue = check data[fieldName].ensureType();
+            boolean conditionResult = evaluateCondition(fieldValue, value);
             if conditionResult {
                 matchedData.push(data);
             } else {
