@@ -1,13 +1,87 @@
-import ballerina/data.jsondata;
 import ballerinax/openai.chat;
+import ballerina/data.jsondata;
+import ballerina/lang.regexp;
 
-configurable string openAIKey = ?;
-
-final chat:Client chatClient = check new ({
-    auth: {
-        token: openAIKey
+# Categorizes a dataset based on a numeric field and specified ranges.
+# ```ballerina
+# record {}[] dataset = [{"value": 10.5}, {"value": 25.0}, {"value": 5.3}];
+# string fieldName = "value";
+# float[][] rangeArray = [[0.0, 10.0], [10.0, 20.0]];
+# record {}[][] categorized = check categorizeNumeric(dataset, fieldName, rangeArray);
+# ```
+#
+# + dataset - Array of records containing numeric values.
+# + fieldName - Name of the numeric field to categorize.
+# + rangeArray - Array of float ranges specifying category boundaries.
+# + return - A nested array of categorized records or an error if categorization fails.
+public function categorizeNumeric(record {}[] dataset, string fieldName, float[][] rangeArray) returns record {}[][]|error {
+    do {
+        record {}[][] categorizedData = [];
+        foreach int i in 0 ... rangeArray.length() {
+            categorizedData.push([]);
+        }
+        foreach record {} data in dataset {
+            float fieldValue = check data[fieldName].ensureType();
+            boolean isCategorized = false;
+            foreach float[] range in rangeArray {
+                if (fieldValue >= range[0] && fieldValue < range[1]) {
+                    categorizedData[check rangeArray.indexOf(range).ensureType(int)].push(data);
+                    isCategorized = true;
+                    break;
+                }
+            }
+            if (!isCategorized) {
+                categorizedData[rangeArray.length()].push(data);
+            }
+        }
+        return categorizedData;
+    } on fail error e {
+        return e;
     }
-});
+}
+
+# Categorizes a dataset based on a string field using a set of regular expressions.
+# ```ballerina
+# import ballerina/regexp;
+# record {}[] dataset = [
+#     { "name": "Alice", "city": "New York" },
+#     { "name": "Bob", "city": "Colombo" },
+#     { "name": "John", "city": "Boston" },
+#     { "name": "Charlie", "city": "Los Angeles" }
+# ];
+# string fieldName = "name";
+# regexp:RegExp[] regexArray = [re `A.*$`, re `^B.*$`, re `^C.*$`];
+# record {}[][] categorized = check categorizeRegexData(dataset, fieldName, regexArray);
+# ```
+#
+# + dataset - Array of records containing string values.
+# + fieldName - Name of the string field to categorize.
+# + regexArray - Array of regular expressions for matching categories.
+# + return - A nested array of categorized records or an error if categorization fails.
+public function categorizeRegexData(record {}[] dataset, string fieldName, regexp:RegExp[] regexArray) returns record {}[][]|error {
+    do {
+        record {}[][] categorizedData = [];
+        foreach int i in 0 ... regexArray.length() {
+            categorizedData.push([]);
+        }
+        foreach record {} data in dataset {
+            boolean isCategorized = false;
+            foreach regexp:RegExp regex in regexArray {
+                if regex.isFullMatch((data[fieldName].toString())) {
+                    categorizedData[check regexArray.indexOf(regex).ensureType(int)].push(data);
+                    isCategorized = true;
+                    break;
+                }
+            }
+            if (!isCategorized) {
+                categorizedData[regexArray.length()].push(data);
+            }
+        }
+        return categorizedData;
+    } on fail error e {
+        return e;
+    }
+}
 
 # Categorizes a dataset based on a string field using semantic classification via OpenAI's GPT model.
 # ```ballerina

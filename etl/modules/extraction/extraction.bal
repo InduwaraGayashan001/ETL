@@ -1,14 +1,6 @@
 import ballerina/data.jsondata;
 import ballerinax/openai.chat;
 
-configurable string openAIKey = ?;
-
-final chat:Client chatClient = check new ({
-    auth: {
-        token: openAIKey
-    }
-});
-
 # Extracts unstructured data from a string array and maps it to the specified fields.
 # ```ballerina
 # string[] reviews = ["The product is great, but it could be improved.", "Not bad, but needs some updates."];
@@ -20,7 +12,7 @@ final chat:Client chatClient = check new ({
 # + fieldNames - Array of field names to map the extracted details.
 # + modelName - Name of the Open AI model
 # + return - A record with extracted details mapped to the specified field names or an error if extraction fails.
-function extractUnstructuredData(string dataset, string[] fieldNames, string modelName = "gpt-4o") returns record {}|error {
+public function extractUnstructuredData(string dataset, string[] fieldNames, string modelName = "gpt-4o") returns record {}|error {
     do {
 
         chat:CreateChatCompletionRequest request = {
