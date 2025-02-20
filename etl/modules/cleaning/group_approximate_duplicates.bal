@@ -18,11 +18,12 @@ type DuplicateGroupingResult record {
 # ```
 #
 # + dataset - Array of records that may contain approximate duplicates.
+# + modelName - Name of the Open AI model
 # + return - A `DuplicateGroupingResult` containing:
 # - `uniqueRecords`: Array of records that have no approximate duplicates.
 # - `duplicateGroups`: Groups of approximate duplicate records as an array of arrays.
 # Returns an error if the operation fails.
-function groupApproximateDuplicates(record {}[] dataset) returns DuplicateGroupingResult|error {
+function groupApproximateDuplicates(record {}[] dataset, string modelName ="gpt-4o") returns DuplicateGroupingResult|error {
     do {
         chat:Client chatClient = check new ({
             auth: {
@@ -31,23 +32,34 @@ function groupApproximateDuplicates(record {}[] dataset) returns DuplicateGroupi
         });
 
         chat:CreateChatCompletionRequest request = {
-            model: "gpt-4o",
+            model: modelName,
             messages: [
                 {
                     "role": "user",
-                    "content": string `Identify and group approximate duplicates in the given dataset.  
-                                - Input Dataset: ${dataset.toJsonString()}  
-                                Return a JSON object with the following structure without any formatting, without any additional text, explanations, or variations:  
+                    "content": string ` Identify approximate duplicates in the dataset and group them.
+                                        - Input Dataset : ${dataset.toString()}  
+                                         Respond the result as a JSON objects as follows, without any formatting.
+                                         {
+                                            "uniqueRecords" : This field must contain only the unique records as an array of json objects. If there are no any unique records keep this as empty array
+                                            "duplicateGroups" : This field contains all the duplicate groups as an array of array of json objects
+                                         }
+                                         Do not include any additional text, explanations, or variations.
+                                         
+                                         Example
 
-                                {
-                                    "uniqueRecords": [
-                                        // Array of unique records that do not have any duplicates.
-                                        // If no unique records exist, return an empty array.
-                                    ],
-                                    "duplicateGroups": [
-                                        // An array of groups where each group contains records that are approximate duplicates of each other.
-                                    ]
-                                }`
+                                         - Input Dataset :
+                                         [{"customerId":"1","customerName":"John Doe","email":"john.doe@email.com","phone":"1234567890","address":"123 Main St"},
+                                          {"customerId":"2","customerName":"Jon Doe","email":"john.doe@email.com","phone":"1234567890","address":"123 Main Street"},
+                                          {"customerId":"3","customerName":"Jane Smith","email":"jane.smith@email.com","phone":"0987654321","address":"456 Elm St"},
+                                          {"customerId":"4","customerName":"Janet Smith","email":"jane.smith@email.com","phone":"0987654321","address":"456 Elm Street"},
+                                          {"customerId":"7","customerName":"Emilly Clark","email":"emily.clark@email.com","phone":"2223334444","address":"101 Pine Street"},
+                                          {"customerId":"8","customerName":"John Charles","email":"john.charles@email.com","phone":"3483845456","address":"108 Rose Street"}]
+
+                                        - Output Result :
+                                        {
+                                            "uniqueRecords":[{"customerId":"5","customerName":"Mark Johnson","email":"mark.j@email.com","phone":"1112223333","address":"789 Oak St"},{"customerId":"8","customerName":"John Charles","email":"john.charles@email.com","phone":"3483845456","address":"108 Rose Street"}],
+                                            "duplicateGroups":[[{"customerId":"1","customerName":"John Doe","email":"john.doe@email.com","phone":"1234567890","address":"123 Main St"},{"customerId":"2","customerName":"Jon Doe","email":"john.doe@email.com","phone":"1234567890","address":"123 Main Street"}],[{"customerId":"3","customerName":"Jane Smith","email":"jane.smith@email.com","phone":"0987654321","address":"456 Elm St"},{"customerId":"4","customerName":"Janet Smith","email":"jane.smith@email.com","phone":"0987654321","address":"456 Elm Street"}]
+                                        } `
                 }
             ]
         };
