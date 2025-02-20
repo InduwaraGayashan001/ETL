@@ -23,7 +23,7 @@ type DuplicateGroupingResult record {
 # - `uniqueRecords`: Array of records that have no approximate duplicates.
 # - `duplicateGroups`: Groups of approximate duplicate records as an array of arrays.
 # Returns an error if the operation fails.
-function groupApproximateDuplicates(record {}[] dataset, string modelName ="gpt-4o") returns DuplicateGroupingResult|error {
+function groupApproximateDuplicates(record {}[] dataset, string modelName = "gpt-4o") returns DuplicateGroupingResult|error {
     do {
         chat:Client chatClient = check new ({
             auth: {

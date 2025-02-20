@@ -64,7 +64,7 @@ function categorizeSemantic(record {}[] dataSet, string fieldName, string[] cate
         };
 
         chat:CreateChatCompletionResponse result = check chatClient->/chat/completions.post(request);
-        string content = check result.choices[0].message?.content.ensureType(); 
+        string content = check result.choices[0].message?.content.ensureType();
         return check jsondata:parseAsType(check content.fromJsonString());
     } on fail error e {
         return e;
