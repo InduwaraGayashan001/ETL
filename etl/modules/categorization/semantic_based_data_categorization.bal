@@ -20,12 +20,12 @@ final chat:Client chatClient = check new ({
 # record {}[][] categorized = check categorizeSemantic(dataset, fieldName, categories);
 # ```
 #
-# + dataSet - Array of records containing textual data.
+# + dataset - Array of records containing textual data.
 # + fieldName - Name of the field to categorize.
 # + categories - Array of category names for classification.
 # + modelName - Name of the Open AI model
 # + return - A nested array of categorized records or an error if classification fails.
-function categorizeSemantic(record {}[] dataSet, string fieldName, string[] categories, string modelName = "gpt-4o") returns record {}[][]|error {
+function categorizeSemantic(record {}[] dataset, string fieldName, string[] categories, string modelName = "gpt-4o") returns record {}[][]|error {
     do {
         chat:CreateChatCompletionRequest request = {
             model: modelName,
@@ -33,7 +33,7 @@ function categorizeSemantic(record {}[] dataSet, string fieldName, string[] cate
                 {
                     "role": "user",
                     "content": string `Classify the given dataset into one of the specified categories based on the provided field name.  
-                                        - Input Dataset: ${dataSet.toString()}  
+                                        - Input Dataset: ${dataset.toString()}  
                                         - Categories: ${categories.toString()}  
                                         - Field: ${fieldName}  
                                         If a record does not belong to any category, place it in a separate dataset at the end.  

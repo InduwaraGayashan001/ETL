@@ -14,14 +14,14 @@
 # record {}[] maskedData = check maskSensitiveData(dataset, fieldNames, maskingCharacter);
 # ```
 #
-# + dataSet - The dataset containing records where sensitive fields should be masked.
+# + dataset - The dataset containing records where sensitive fields should be masked.
 # + fieldNames - An array of field names that should be masked.
 # + maskingCharacter - The character used to replace each character in the sensitive fields.
 # + return - A dataset where the specified fields are masked.
-public function maskSensitiveData(record {}[] dataSet, string[] fieldNames, string:Char maskingCharacter) returns record {}[]|error {
+public function maskSensitiveData(record {}[] dataset, string[] fieldNames, string:Char maskingCharacter) returns record {}[]|error {
     do {
         record {}[] maskedDataset = [];
-        foreach record {} data in dataSet {
+        foreach record {} data in dataset {
             record {} maskedData = {};
             foreach string key in data.keys() {
                 if fieldNames.some(element => element == key) {

@@ -13,16 +13,16 @@ import ballerina/lang.regexp;
 # [record {}[], record {}[]] [matched, nonMatched] = check filterDataByRegex(dataset, fieldName, regexPattern);
 # ```
 #
-# + dataSet - Array of records to be filtered.
+# + dataset - Array of records to be filtered.
 # + fieldName - Name of the field to apply the regex filter.
 # + regexPattern - Regular expression to match values in the field.
 # + return - A tuple with two subsets: matched and non-matched records.
-public function filterDataByRegex(record {}[] dataSet, string fieldName, regexp:RegExp regexPattern) returns [record {}[], record {}[]]|error {
+public function filterDataByRegex(record {}[] dataset, string fieldName, regexp:RegExp regexPattern) returns [record {}[], record {}[]]|error {
     do {
-        record {}[] matchedData = from record {} data in dataSet
+        record {}[] matchedData = from record {} data in dataset
             where regexPattern.isFullMatch((data[fieldName].toString()))
             select data;
-        record {}[] nonMatchedData = from record {} data in dataSet
+        record {}[] nonMatchedData = from record {} data in dataset
             where !regexPattern.isFullMatch((data[fieldName].toString()))
             select data;
         return [matchedData, nonMatchedData];

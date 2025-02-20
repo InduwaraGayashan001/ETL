@@ -7,11 +7,11 @@
 # record {}[] mergedData = check mergeData(dataSets);
 # ```
 #
-# + dataSets - An array of datasets, where each dataset is an array of records.
+# + datasets - An array of datasets, where each dataset is an array of records.
 # + return - A single merged dataset containing all records or an error if merging fails.
-public function mergeData(record {}[][] dataSets) returns record {}[]|error {
+public function mergeData(record {}[][] datasets) returns record {}[]|error {
     do {
-        return from record {}[] dataSet in dataSets
+        return from record {}[] dataSet in datasets
             from record {} data in dataSet
             select data;
     } on fail error e {

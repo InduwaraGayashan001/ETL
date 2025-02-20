@@ -12,10 +12,10 @@ import ballerina/random;
 # [record {}[], record {}[]] [part1, part2] = check filterDataByRatio(dataset, ratio);
 # ```
 #
-# + dataSet - Array of records to be split.
+# + dataset - Array of records to be split.
 # + ratio - The ratio for splitting the dataset (e.g., `0.75` means 75% in the first set).
 # + return - A tuple containing two subsets of the dataset.
-public function filterDataByRatio(record {}[] dataSet, float ratio) returns [record {}[], record {}[]]|error {
+public function filterDataByRatio(record {}[] dataset, float ratio) returns [record {}[], record {}[]]|error {
     do {
         function (record {}[] data) returns record {}[]|error shuffle = function(record {}[] data) returns record {}[]|error {
             int dataLength = data.length();
@@ -27,9 +27,9 @@ public function filterDataByRatio(record {}[] dataSet, float ratio) returns [rec
             }
             return data;
         };
-        int dataLength = dataSet.length();
+        int dataLength = dataset.length();
         int splittingPoint = <int>(dataLength * ratio);
-        record {}[] shuffledData = check shuffle(dataSet);
+        record {}[] shuffledData = check shuffle(dataset);
         return [shuffledData.slice(0, splittingPoint), shuffledData.slice(splittingPoint)];
     } on fail error e {
         return e;
