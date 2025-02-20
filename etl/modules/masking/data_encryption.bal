@@ -17,7 +17,7 @@ import ballerina/lang.array;
 # + fieldNames - An array of field names that should be encrypted.
 # + keyBase64 - The AES encryption key in Base64 format.
 # + return - A dataset with specified fields encrypted using AES-ECB and Base64-encoded.
-function encryptData(record {}[] dataset, string[] fieldNames, string keyBase64) returns record {}[]|error {
+public function encryptData(record {}[] dataset, string[] fieldNames, string keyBase64) returns record {}[]|error {
     do {
         byte[] encryptkey = check array:fromBase64(keyBase64);
         record {}[] encryptedDataSet = [];

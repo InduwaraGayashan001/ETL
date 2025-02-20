@@ -17,7 +17,7 @@ import ballerina/lang.array;
 # + fieldNames - An array of field names that should be decrypted.
 # + keyBase64 - The AES decryption key in Base64 format.
 # + return - A dataset with the specified fields decrypted.
-function decryptData(record {}[] dataset, string[] fieldNames, string keyBase64) returns record {}[]|error {
+public function decryptData(record {}[] dataset, string[] fieldNames, string keyBase64) returns record {}[]|error {
     do {
         byte[] decryptKey = check array:fromBase64(keyBase64);
         record {}[] decryptededDataSet = [];

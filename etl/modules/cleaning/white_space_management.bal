@@ -9,7 +9,7 @@
 #
 # + dataset - Array of records with possible extra spaces.
 # + return - A dataset where multiple spaces are replaced with a single space, and values are trimmed.
-function handleWhiteSpaces(record {}[] dataset) returns record {}[]|error {
+public function handleWhiteSpaces(record {}[] dataset) returns record {}[]|error {
     do {
         from record {} data in dataset
         from string key in data.keys()
