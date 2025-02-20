@@ -25,12 +25,6 @@ type DuplicateGroupingResult record {
 # Returns an error if the operation fails.
 function groupApproximateDuplicates(record {}[] dataset, string modelName = "gpt-4o") returns DuplicateGroupingResult|error {
     do {
-        chat:Client chatClient = check new ({
-            auth: {
-                token: openAIKey
-            }
-        });
-
         chat:CreateChatCompletionRequest request = {
             model: modelName,
             messages: [
