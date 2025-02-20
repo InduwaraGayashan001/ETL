@@ -1,6 +1,6 @@
-import ballerinax/openai.chat;
 import ballerina/data.jsondata;
 import ballerina/lang.regexp;
+import ballerinax/openai.chat;
 
 # Categorizes a dataset based on a numeric field and specified ranges.
 # ```ballerina

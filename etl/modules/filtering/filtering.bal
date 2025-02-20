@@ -1,5 +1,5 @@
-import ballerina/random;
 import ballerina/lang.regexp;
+import ballerina/random;
 
 # Splits a dataset into two parts based on a given ratio.
 # ```ballerina

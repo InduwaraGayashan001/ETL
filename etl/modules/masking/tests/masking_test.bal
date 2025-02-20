@@ -37,16 +37,16 @@ function testDecryptData() returns error? {
 @test:Config {}
 function testMaskSensitiveData() returns error? {
     record {}[] dataset = [
-        { "id": 1, "name": "John", "email": "john@example.com" },
-        { "id": 2, "name": "Jane", "email": "jane@example.com" }
+        {"id": 1, "name": "John", "email": "john@example.com"},
+        {"id": 2, "name": "Jane", "email": "jane@example.com"}
     ];
 
     string[] fieldNames = ["name", "email"];
     string:Char maskingCharacter = "X";
 
     record {}[] expectedOutput = [
-        { "id": 1, "name": "XXXX", "email": "XXXXXXXXXXXXXXXX" },
-        { "id": 2, "name": "XXXX", "email": "XXXXXXXXXXXXXXXX" }
+        {"id": 1, "name": "XXXX", "email": "XXXXXXXXXXXXXXXX"},
+        {"id": 2, "name": "XXXX", "email": "XXXXXXXXXXXXXXXX"}
     ];
 
     record {}[] maskedData = check maskSensitiveData(dataset, fieldNames, maskingCharacter);
