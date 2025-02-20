@@ -33,3 +33,22 @@ function testDecryptData() returns error? {
     record {}[] decryptedData = check decryptData(encryptedData, ["name", "age"], keyBase64);
     test:assertEquals(decryptedData, expectedDecryptedData);
 }
+
+@test:Config {}
+function testMaskSensitiveData() returns error? {
+    record {}[] dataset = [
+        { "id": 1, "name": "John", "email": "john@example.com" },
+        { "id": 2, "name": "Jane", "email": "jane@example.com" }
+    ];
+
+    string[] fieldNames = ["name", "email"];
+    string:Char maskingCharacter = "X";
+
+    record {}[] expectedOutput = [
+        { "id": 1, "name": "XXXX", "email": "XXXXXXXXXXXXXXXX" },
+        { "id": 2, "name": "XXXX", "email": "XXXXXXXXXXXXXXXX" }
+    ];
+
+    record {}[] maskedData = check maskSensitiveData(dataset, fieldNames, maskingCharacter);
+    test:assertEquals(maskedData, expectedOutput);
+}
