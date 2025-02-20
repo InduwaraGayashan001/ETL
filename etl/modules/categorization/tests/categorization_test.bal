@@ -50,7 +50,7 @@ function testCategorizeSemantic() returns error? {
     record {}[] dataset = [
         {"id": 1, "comment": "Great service!"},
         {"id": 2, "comment": "Terrible experience"},
-        {"id": 3, "comment": "Average quality"}
+        {"id": 3, "comment": "blh blh blh"}
     ];
     string fieldName = "comment";
     string[] categories = ["Positive", "Negative"];
@@ -58,7 +58,7 @@ function testCategorizeSemantic() returns error? {
     record {}[][] expected = [
         [{"id": 1, "comment": "Great service!"}],
         [{"id": 2, "comment": "Terrible experience"}],
-        [{"id": 3, "comment": "Average quality"}]
+        [{"id": 3, "comment": "blh blh blh"}]
     ];
 
     record {}[][] categorized = check categorizeSemantic(dataset, fieldName, categories);
