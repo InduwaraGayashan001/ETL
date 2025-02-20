@@ -22,22 +22,20 @@ public function encryptData(record {}[] dataset, string[] fieldNames, string key
         byte[] encryptkey = check array:fromBase64(keyBase64);
         record {}[] encryptedDataSet = [];
         foreach record {} data in dataset {
-            record {} newData = {};
+            record {} encryptedData = {};
             foreach string key in data.keys() {
                 if fieldNames.some(element => element == key) {
                     byte[] dataByte = data[key].toString().toBytes();
                     byte[] cipherText = check crypto:encryptAesEcb(dataByte, encryptkey);
-                    newData[key] = cipherText.toBase64();
+                    encryptedData[key] = cipherText.toBase64();
                 } else {
-                    newData[key] = data[key];
+                    encryptedData[key] = data[key];
                 }
             }
-            encryptedDataSet.push(newData);
+            encryptedDataSet.push(encryptedData);
         }
         return encryptedDataSet;
     } on fail error e {
         return e;
     }
 }
-
-//new function to find sensitive data and replace

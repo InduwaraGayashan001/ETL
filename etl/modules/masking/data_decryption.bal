@@ -22,23 +22,21 @@ public function decryptData(record {}[] dataset, string[] fieldNames, string key
         byte[] decryptKey = check array:fromBase64(keyBase64);
         record {}[] decryptededDataSet = [];
         foreach record {} data in dataset {
-            record {} newData = {};
+            record {} decryptedData = {};
             foreach string key in data.keys() {
                 if fieldNames.some(element => element == key) {
                     byte[] dataByte = check array:fromBase64(data[key].toString());
                     byte[] plainText = check crypto:decryptAesEcb(dataByte, decryptKey);
                     string plainTextString = check string:fromBytes(plainText);
-                    newData[key] = plainTextString;
+                    decryptedData[key] = plainTextString;
                 } else {
-                    newData[key] = data[key];
+                    decryptedData[key] = data[key];
                 }
             }
-            decryptededDataSet.push(newData);
+            decryptededDataSet.push(decryptedData);
         }
         return decryptededDataSet;
     } on fail error e {
         return e;
     }
 }
-
-// give field names as an array, set the defualt value to select all
