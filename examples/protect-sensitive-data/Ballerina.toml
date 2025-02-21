@@ -1,0 +1,14 @@
+[package]
+org = "induwarag"
+name = "protect_sensitive_data"
+version = "0.1.0"
+distribution = "2201.11.0"
+
+[build-options]
+observabilityIncluded = true
+
+[[dependency]]
+org = "induwaragm"
+name = "etl"
+version = "0.1.0"
+repository="local"
