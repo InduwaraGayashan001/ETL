@@ -9,7 +9,7 @@ type ReviewSummary record {|
 
 public function main(string[] arg) returns error? {
 
-    string[] reviews = check io:fileReadLines("./resources/Input.txt");
+    string reviews = check io:fileReadString("./resources/Input.txt");
     string[] fields = ["goodPoints", "badPoints", "improvements"];
     record {} extractedDetails = check extraction:extractUnstructuredData(reviews, fields);
     io:println(`Extracted Details : ${extractedDetails.cloneWithType(ReviewSummary)}`);
