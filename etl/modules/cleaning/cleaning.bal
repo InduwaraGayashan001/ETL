@@ -125,7 +125,7 @@ public function standardizeData(record {}[] dataset, string fieldName, string se
 # - `uniqueRecords`: Array of records that have no approximate duplicates.
 # - `duplicateGroups`: Groups of approximate duplicate records as an array of arrays.
 # Returns an error if the operation fails.
-function groupApproximateDuplicates(record {}[] dataset, string modelName = "gpt-4o") returns DuplicateGroupingResult|error {
+public function groupApproximateDuplicates(record {}[] dataset, string modelName = "gpt-4o") returns DuplicateGroupingResult|error {
     do {
         chat:CreateChatCompletionRequest request = {
             model: modelName,
