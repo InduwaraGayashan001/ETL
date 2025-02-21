@@ -368,6 +368,6 @@ modules = [
 	{org = "induwaragm", packageName = "etl", moduleName = "etl.enrichment"},
 	{org = "induwaragm", packageName = "etl", moduleName = "etl.extraction"},
 	{org = "induwaragm", packageName = "etl", moduleName = "etl.filtering"},
-	{org = "induwaragm", packageName = "etl", moduleName = "etl.masking"}
+	{org = "induwaragm", packageName = "etl", moduleName = "etl.security"}
 ]
 

@@ -9,7 +9,7 @@ name = "etl.extraction"
 export = true
 
 [[package.modules]]
-name = "etl.masking"
+name = "etl.security"
 export = true
 
 [[package.modules]]
