@@ -29,7 +29,7 @@ public function filterDataByRatio(record {}[] dataset, float ratio) returns [rec
             return data;
         };
         int dataLength = dataset.length();
-        int splittingPoint = <int>(dataLength * ratio);
+        int splittingPoint = check (dataLength * ratio).ensureType();
         record {}[] shuffledData = check shuffle(dataset);
         return [shuffledData.slice(0, splittingPoint), shuffledData.slice(splittingPoint)];
     } on fail error e {
