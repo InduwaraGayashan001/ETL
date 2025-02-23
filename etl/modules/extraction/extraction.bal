@@ -5,7 +5,7 @@ import ballerinax/openai.chat;
 # ```ballerina
 # string[] reviews = ["The product is great, but it could be improved.", "Not bad, but needs some updates."];
 # string[] fields = ["goodPoints", "badPoints", "improvements"];
-# record {} extractedDetails = check extractUnstructuredData(reviews, fields);
+# record {} extractedDetails = check extraction:extractUnstructuredData(reviews, fields);
 # ```
 #
 # + dataset - Array of unstructured string data (e.g., reviews or comments).

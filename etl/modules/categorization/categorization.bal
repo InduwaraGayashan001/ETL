@@ -7,7 +7,7 @@ import ballerinax/openai.chat;
 # record {}[] dataset = [{"value": 10.5}, {"value": 25.0}, {"value": 5.3}];
 # string fieldName = "value";
 # float[][] rangeArray = [[0.0, 10.0], [10.0, 20.0]];
-# record {}[][] categorized = check categorizeNumeric(dataset, fieldName, rangeArray);
+# record {}[][] categorized = check categorization:categorizeNumeric(dataset, fieldName, rangeArray);
 # ```
 #
 # + dataset - Array of records containing numeric values.
@@ -51,7 +51,7 @@ public function categorizeNumeric(record {}[] dataset, string fieldName, float[]
 # ];
 # string fieldName = "name";
 # regexp:RegExp[] regexArray = [re `A.*$`, re `^B.*$`, re `^C.*$`];
-# record {}[][] categorized = check categorizeRegexData(dataset, fieldName, regexArray);
+# record {}[][] categorized = check categorization:categorizeRegexData(dataset, fieldName, regexArray);
 # ```
 #
 # + dataset - Array of records containing string values.
@@ -91,7 +91,7 @@ public function categorizeRegexData(record {}[] dataset, string fieldName, regex
 # ];
 # string fieldName = "comment";
 # string[] categories = ["Positive", "Negative"];
-# record {}[][] categorized = check categorizeSemantic(dataset, fieldName, categories);
+# record {}[][] categorized = check categorization:categorizeSemantic(dataset, fieldName, categories);
 # ```
 #
 # + dataset - Array of records containing textual data.

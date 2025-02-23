@@ -10,7 +10,7 @@ import ballerina/lang.array;
 # ];
 # string[] fieldNames = ["name", "age"];
 # string keyBase64 = "aGVsbG9zZWNyZXRrZXkxMjM0NTY=";
-# record {}[] encryptedData = check encryptData(dataset, fieldNames, keyBase64);
+# record {}[] encryptedData = check security:encryptData(dataset, fieldNames, keyBase64);
 # ```
 #
 # + dataset - The dataset containing records where specific fields need encryption.
@@ -49,7 +49,7 @@ public function encryptData(record {}[] dataset, string[] fieldNames, string key
 # ];
 # string[] fieldNames = ["name", "age"];
 # string keyBase64 = "aGVsbG9zZWNyZXRrZXkxMjM0NTY=";
-# record {}[] decryptedData = check decryptData(encryptedDataset, fieldNames, keyBase64);
+# record {}[] decryptedData = check security:decryptData(encryptedDataset, fieldNames, keyBase64);
 # ```
 #
 # + dataset - The dataset containing records with Base64-encoded encrypted fields.
@@ -92,7 +92,7 @@ public function decryptData(record {}[] dataset, string[] fieldNames, string key
 # ];
 # string[] fieldNames = ["name", "email"];
 # string:Char maskingCharacter = "X";
-# record {}[] maskedData = check maskSensitiveData(dataset, fieldNames, maskingCharacter);
+# record {}[] maskedData = check security:maskSensitiveData(dataset, fieldNames, maskingCharacter);
 # ```
 #
 # + dataset - The dataset containing records where sensitive fields should be masked.

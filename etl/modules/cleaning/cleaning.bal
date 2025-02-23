@@ -11,7 +11,7 @@ import ballerinax/openai.chat;
 # ];
 # string fieldName = "age";
 # boolean isAscending = true;
-# record {}[] sortedData = check sort(dataset, fieldName, isAscending);
+# record {}[] sortedData = check cleaning:sort(dataset, fieldName, isAscending);
 # ```
 #
 # + dataset - Array of records to be sorted.
@@ -45,7 +45,7 @@ public function sort(record {}[] dataset, string fieldName, boolean isAscending 
 # ];
 # string fieldName = "city";
 # string searchValue = "New York";
-# record {}[] standardizedData = check standardizeData(dataset, fieldName, searchValue);
+# record {}[] standardizedData = check cleaning:standardizeData(dataset, fieldName, searchValue);
 # ```
 #
 # + dataset - Array of records containing string values to be standardized.
@@ -116,7 +116,7 @@ public function standardizeData(record {}[] dataset, string fieldName, string se
 #     { "name": "Alice", "city": "new york" },
 #     { "name": "Charlie", "city": "Los Angeles" }
 # ];
-# DuplicateGroupingResult result = check identifyAndGroupDuplicates(dataset);
+# DuplicateGroupingResult result = check cleaning:groupApproximateDuplicates(dataset);
 # ```
 #
 # + dataset - Array of records that may contain approximate duplicates.
@@ -177,7 +177,7 @@ public function groupApproximateDuplicates(record {}[] dataset, string modelName
 #     { "name": "Charlie", "city": "Chicago", "age": 35 }
 # ];
 # string fieldName = "age";
-# record {}[] updatedData = check removeField(dataset, fieldName);
+# record {}[] updatedData = check cleaning:removeField(dataset, fieldName);
 # ```
 #
 # + dataSet - Array of records with fields to be removed.
@@ -201,7 +201,7 @@ public function removeField(record {}[] dataSet, string fieldName) returns recor
 #     { "name": "Bob", "city": null },
 #     { "name": "Charlie", "city": "" }
 # ];
-# record {}[] filteredData = check removeNull(dataset);
+# record {}[] filteredData = check cleaning:removeNull(dataset);
 # ```
 #
 # + dataset - Array of records containing potential null or empty fields.
@@ -232,7 +232,7 @@ public function removeNull(record {}[] dataset) returns record {}[]|error {
 #     { "name": "Bob", "city": "Los Angeles" },
 #     { "name": "Alice", "city": "New York" }
 # ];
-# record {}[] uniqueData = check removeDuplicates(dataset);
+# record {}[] uniqueData = check cleaning:removeDuplicates(dataset);
 # ```
 #
 # + dataset - Array of records that may contain duplicates.
@@ -257,7 +257,7 @@ public function removeDuplicates(record {}[] dataset) returns record {}[]|error 
 # string fieldName = "city";
 # regexp:RegExp searchValue = re `New York`;
 # string replaceValue = "San Francisco";
-# record {}[] updatedData = check replaceText(dataset, fieldName, searchValue, replaceValue);
+# record {}[] updatedData = check cleaning:replaceText(dataset, fieldName, searchValue, replaceValue);
 # ```
 #
 # + dataset - Array of records where text in a specified field will be replaced.
@@ -284,7 +284,7 @@ public function replaceText(record {}[] dataset, string fieldName, regexp:RegExp
 #     { "name": "  Alice   ", "city": "New   York  " },
 #     { "name": "   Bob", "city": "Los  Angeles  " }
 # ];
-# record {}[] cleanedData = check handleWhiteSpaces(dataset);
+# record {}[] cleanedData = check cleaning:handleWhiteSpaces(dataset);
 # ```
 #
 # + dataset - Array of records with possible extra spaces.

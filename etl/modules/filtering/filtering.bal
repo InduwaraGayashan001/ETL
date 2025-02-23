@@ -10,7 +10,7 @@ import ballerina/random;
 #     { "id": 4, "name": "David" }
 # ];
 # float ratio = 0.75;
-# [record {}[], record {}[]] [part1, part2] = check filterDataByRatio(dataset, ratio);
+# [record {}[], record {}[]] [part1, part2] = check filtering:filterDataByRatio(dataset, ratio);
 # ```
 #
 # + dataset - Array of records to be split.
@@ -48,7 +48,7 @@ public function filterDataByRatio(record {}[] dataset, float ratio) returns [rec
 # ];
 # string fieldName = "city";
 # regexp:RegExp regexPattern = re `^New.*$`;
-# [record {}[], record {}[]] [matched, nonMatched] = check filterDataByRegex(dataset, fieldName, regexPattern);
+# [record {}[], record {}[]] [matched, nonMatched] = check filtering:filterDataByRegex(dataset, fieldName, regexPattern);
 # ```
 #
 # + dataset - Array of records to be filtered.
@@ -81,7 +81,7 @@ public function filterDataByRegex(record {}[] dataset, string fieldName, regexp:
 # string fieldName = "age";
 # string operation = ">";
 # float value = 25;
-# [record {}[], record {}[]] [olderThan25, youngerOrEqual25] = check filterDataByRelativeExp(dataset, fieldName, operation, value);
+# [record {}[], record {}[]] [olderThan25, youngerOrEqual25] = check filtering:filterDataByRelativeExp(dataset, fieldName, operation, value);
 # ```
 #
 # + dataset - Array of records containing numeric fields for comparison.

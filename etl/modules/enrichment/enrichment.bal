@@ -3,7 +3,7 @@
 # record {}[] dataset1 = [{id: 1, name: "Alice"}, {id: 2, name: "Bob"}];
 # record {}[] dataset2 = [{id: 1, age: 25}, {id: 2, age: 30}];
 # string primaryKey = "id";
-# record {}[] mergedData = check joinData(dataset1, dataset2, primaryKey);
+# record {}[] mergedData = check enrichment:joinData(dataset1, dataset2, primaryKey);
 # ```
 #
 # + dataset1 - First dataset containing base records.
@@ -34,7 +34,7 @@ public function joinData(record {}[] dataset1, record {}[] dataset2, string prim
 #     [{id: 1, name: "Alice"}, {id: 2, name: "Bob"}],
 #     [{id: 3, name: "Charlie"}, {id: 4, name: "David"}]
 # ];
-# record {}[] mergedData = check mergeData(dataSets);
+# record {}[] mergedData = check enrichment:mergeData(dataSets);
 # ```
 #
 # + datasets - An array of datasets, where each dataset is an array of records.
