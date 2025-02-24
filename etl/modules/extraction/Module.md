@@ -2,7 +2,7 @@
 
 ## Module Overview
 
-The `etlS.extraction` module provides functions for extracting data.
+The `etl.extraction` module provides functions for extracting data.
 
 ## Key Functions
 
