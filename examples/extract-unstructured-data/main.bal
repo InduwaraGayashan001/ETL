@@ -2,9 +2,9 @@ import ballerina/io;
 import induwaragm/etl.extraction;
 
 type ReviewSummary record {|
-    string goodPoints;
-    string badPoints;
-    string improvements;
+    string[] goodPoints;
+    string[] badPoints;
+    string[] improvements;
 |};
 
 public function main(string[] arg) returns error? {
