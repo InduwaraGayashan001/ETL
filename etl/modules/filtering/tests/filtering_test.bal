@@ -11,8 +11,8 @@ function testFilterDataByRatio() returns error? {
     ];
     float ratio = 0.75;
     [record {}[], record {}[]] [part1, part2] = check filterDataByRatio(dataset, ratio);
-    test:assertEquals(part1.length(), <int>(dataset.length() * ratio));
-    test:assertEquals(part2.length(), <int>(dataset.length() * (1.0 - ratio)));
+    test:assertEquals(part1.length(), check (dataset.length() * ratio).ensureType(int));
+    test:assertEquals(part2.length(), check (dataset.length() * (1.0 - ratio)).ensureType(int));
 }
 
 @test:Config {}
