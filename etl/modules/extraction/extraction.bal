@@ -3,7 +3,7 @@ import ballerinax/openai.chat;
 
 # Extracts unstructured data from a string array and maps it to the specified fields.
 # ```ballerina
-# string[] reviews = ["The product is great, but it could be improved.", "Not bad, but needs some updates."];
+# string reviews = "The smartphone has an impressive camera and smooth performance, making it great for photography and gaming. However, the battery drains quickly, and the charging speed could be improved. The UI is intuitive, but some features feel outdated and need a refresh.";
 # string[] fields = ["goodPoints", "badPoints", "improvements"];
 # record {} extractedDetails = check extraction:extractFromUnstructuredData(reviews, fields);
 # ```
