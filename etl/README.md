@@ -9,7 +9,7 @@ The `etl` (Extract, Transform, Load) package provides a collection of modules de
 ### 1. `etl.extraction` Module
 The `etl.extraction` module provides functions for extracting data.
 **Key Functions:**
-- `extractUnstructuredData`: Extracts relevant details from a string array and maps them to the specified fields using OpenAI's GPT model.
+- `extractFromUnstructuredData`: Extracts relevant details from a string array and maps them to the specified fields using OpenAI's GPT model.
 
 ### 2. `etl.filtering` Module
 The `etl.filtering` module provides functions to filter datasets based on different conditions.
