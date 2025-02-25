@@ -56,7 +56,10 @@ public function filterDataByRatio(record {}[] dataset, float ratio) returns [rec
 # + regexPattern - Regular expression to match values in the field.
 # + return - A tuple with two subsets: matched and non-matched records.
 public function filterDataByRegex(record {}[] dataset, string fieldName, regexp:RegExp regexPattern) returns [record {}[], record {}[]]|error {
-    do {
+    if !dataset[0].hasKey(fieldName) {
+        return error(string `Field ${fieldName} not found in the dataset`);
+    }
+    else {
         record {}[] matchedData = from record {} data in dataset
             where regexPattern.isFullMatch((data[fieldName].toString()))
             select data;
@@ -64,8 +67,6 @@ public function filterDataByRegex(record {}[] dataset, string fieldName, regexp:
             where !regexPattern.isFullMatch((data[fieldName].toString()))
             select data;
         return [matchedData, nonMatchedData];
-    } on fail error e {
-        return e;
     }
 }
 
@@ -90,7 +91,10 @@ public function filterDataByRegex(record {}[] dataset, string fieldName, regexp:
 # + value - Numeric value to compare against.
 # + return - A tuple with two subsets: one that matches the condition and one that does not.
 public function filterDataByRelativeExp(record {}[] dataset, string fieldName, Operation operation, float value) returns [record {}[], record {}[]]|error {
-    do {
+    if !dataset[0].hasKey(fieldName) {
+        return error(string `Field ${fieldName} not found in the dataset`);
+    }
+    else {
         record {}[] matchedData = [];
         record {}[] nonMatchedData = [];
 
@@ -127,7 +131,5 @@ public function filterDataByRelativeExp(record {}[] dataset, string fieldName, O
             }
         }
         return [matchedData, nonMatchedData];
-    } on fail error e {
-        return e;
     }
 }
