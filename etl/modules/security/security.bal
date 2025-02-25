@@ -18,7 +18,10 @@ import ballerina/lang.array;
 # + keyBase64 - The AES encryption key in Base64 format.
 # + return - A dataset with specified fields encrypted using AES-ECB and Base64-encoded.
 public function encryptData(record {}[] dataset, string[] fieldNames, string keyBase64) returns record {}[]|error {
-    do {
+    if fieldNames.some(fieldName => !dataset[0].hasKey(fieldName)) {
+        return error(string `Some fields not found in the dataset`);
+    }
+    else {
         byte[] encryptkey = check array:fromBase64(keyBase64);
         record {}[] encryptedDataSet = [];
         foreach record {} data in dataset {
@@ -35,8 +38,6 @@ public function encryptData(record {}[] dataset, string[] fieldNames, string key
             encryptedDataSet.push(encryptedData);
         }
         return encryptedDataSet;
-    } on fail error e {
-        return e;
     }
 }
 
@@ -57,7 +58,10 @@ public function encryptData(record {}[] dataset, string[] fieldNames, string key
 # + keyBase64 - The AES decryption key in Base64 format.
 # + return - A dataset with the specified fields decrypted.
 public function decryptData(record {}[] dataset, string[] fieldNames, string keyBase64) returns record {}[]|error {
-    do {
+    if fieldNames.some(fieldName => !dataset[0].hasKey(fieldName)) {
+        return error(string `Some fields not found in the dataset`);
+    }
+    else {
         byte[] decryptKey = check array:fromBase64(keyBase64);
         record {}[] decryptededDataSet = [];
         foreach record {} data in dataset {
@@ -75,8 +79,6 @@ public function decryptData(record {}[] dataset, string[] fieldNames, string key
             decryptededDataSet.push(decryptedData);
         }
         return decryptededDataSet;
-    } on fail error e {
-        return e;
     }
 }
 
@@ -100,7 +102,10 @@ public function decryptData(record {}[] dataset, string[] fieldNames, string key
 # + maskingCharacter - The character used to replace each character in the sensitive fields.
 # + return - A dataset where the specified fields are masked.
 public function maskSensitiveData(record {}[] dataset, string[] fieldNames, string:Char maskingCharacter) returns record {}[]|error {
-    do {
+    if fieldNames.some(fieldName => !dataset[0].hasKey(fieldName)) {
+        return error(string `Some fields not found in the dataset`);
+    }
+    else {
         record {}[] maskedDataset = [];
         foreach record {} data in dataset {
             record {} maskedData = {};
@@ -114,8 +119,6 @@ public function maskSensitiveData(record {}[] dataset, string[] fieldNames, stri
             maskedDataset.push(maskedData);
         }
         return maskedDataset;
-    } on fail error e {
-        return e;
     }
 }
 
