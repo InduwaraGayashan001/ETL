@@ -18,7 +18,7 @@ import ballerina/random;
 # + return - A tuple containing two subsets of the dataset.
 public function filterDataByRatio(record {}[] dataset, float ratio) returns [record {}[], record {}[]]|error {
     do {
-        function (record {}[] data) returns record {}[]|error shuffle = function(record {}[] data) returns record {}[]|error {
+        function (record {}[] data) returns record {}[]|error shuffle = function(record {}[] data) returns record {}[]|Error {
             int dataLength = data.length();
             foreach int i in 0 ... dataLength - 1 {
                 int randomIndex = check random:createIntInRange(i, dataLength);
@@ -55,7 +55,7 @@ public function filterDataByRatio(record {}[] dataset, float ratio) returns [rec
 # + fieldName - Name of the field to apply the regex filter.
 # + regexPattern - Regular expression to match values in the field.
 # + return - A tuple with two subsets: matched and non-matched records.
-public function filterDataByRegex(record {}[] dataset, string fieldName, regexp:RegExp regexPattern) returns [record {}[], record {}[]]|error {
+public function filterDataByRegex(record {}[] dataset, string fieldName, regexp:RegExp regexPattern) returns [record {}[], record {}[]]|Error {
     if !dataset[0].hasKey(fieldName) {
         return error(string `Field ${fieldName} not found in the dataset`);
     }
@@ -90,7 +90,7 @@ public function filterDataByRegex(record {}[] dataset, string fieldName, regexp:
 # + operation - Comparison operator (`>`, `<`, `>=`, `<=`, `==`, `!=`). 
 # + value - Numeric value to compare against.
 # + return - A tuple with two subsets: one that matches the condition and one that does not.
-public function filterDataByRelativeExp(record {}[] dataset, string fieldName, Operation operation, float value) returns [record {}[], record {}[]]|error {
+public function filterDataByRelativeExp(record {}[] dataset, string fieldName, Operation operation, float value) returns [record {}[], record {}[]]|Error {
     if !dataset[0].hasKey(fieldName) {
         return error(string `Field ${fieldName} not found in the dataset`);
     }

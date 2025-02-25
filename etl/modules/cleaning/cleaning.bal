@@ -18,7 +18,7 @@ import ballerinax/openai.chat;
 # + fieldName - The field by which sorting is performed.
 # + isAscending - Boolean flag to determine sorting order (default: ascending).
 # + return - A sorted dataset based on the specified field.
-public function sort(record {}[] dataset, string fieldName, boolean isAscending = true) returns record {}[]|error {
+public function sort(record {}[] dataset, string fieldName, boolean isAscending = true) returns record {}[]|Error {
     if !dataset[0].hasKey(fieldName) {
         return error(string `Field ${fieldName} not found in the dataset`);
     }
@@ -54,7 +54,7 @@ public function sort(record {}[] dataset, string fieldName, boolean isAscending 
 # + searchValue - The exact value to replace approximate matches.
 # + modelName - Name of the Open AI model
 # + return - An updated dataset with standardized string values or an error if the operation fails.
-public function standardizeData(record {}[] dataset, string fieldName, string searchValue, string modelName = "gpt-4o") returns record {}[]|error {
+public function standardizeData(record {}[] dataset, string fieldName, string searchValue, string modelName = "gpt-4o") returns record {}[]|Error {
     if !dataset[0].hasKey(fieldName) {
         return error(string `Field ${fieldName} not found in the dataset`);
     }
@@ -127,7 +127,7 @@ public function standardizeData(record {}[] dataset, string fieldName, string se
 # - `uniqueRecords`: Array of records that have no approximate duplicates.
 # - `duplicateGroups`: Groups of approximate duplicate records as an array of arrays.
 # Returns an error if the operation fails.
-public function groupApproximateDuplicates(record {}[] dataset, string modelName = "gpt-4o") returns DuplicateGroupingResult|error {
+public function groupApproximateDuplicates(record {}[] dataset, string modelName = "gpt-4o") returns DuplicateGroupingResult|Error {
     do {
         chat:CreateChatCompletionRequest request = {
             model: modelName,
@@ -185,7 +185,7 @@ public function groupApproximateDuplicates(record {}[] dataset, string modelName
 # + dataset - Array of records with fields to be removed.
 # + fieldName - The name of the field to remove from each record.
 # + return - A new dataset with the specified field removed from each record.
-public function removeField(record {}[] dataset, string fieldName) returns record {}[]|error {
+public function removeField(record {}[] dataset, string fieldName) returns record {}[]|Error {
     if !dataset[0].hasKey(fieldName) {
         return error(string `Field ${fieldName} not found in the dataset`);
     }
@@ -209,7 +209,7 @@ public function removeField(record {}[] dataset, string fieldName) returns recor
 #
 # + dataset - Array of records containing potential null or empty fields.
 # + return - A dataset with records containing null or empty string values removed.
-public function removeNull(record {}[] dataset) returns record {}[]|error {
+public function removeNull(record {}[] dataset) returns record {}[]|Error {
     do {
         function (record {} data) returns boolean isContainNull = function(record {} data) returns boolean {
             boolean containNull = false;
@@ -240,7 +240,7 @@ public function removeNull(record {}[] dataset) returns record {}[]|error {
 #
 # + dataset - Array of records that may contain duplicates.
 # + return - A dataset with duplicates removed.
-public function removeDuplicates(record {}[] dataset) returns record {}[]|error {
+public function removeDuplicates(record {}[] dataset) returns record {}[]|Error {
     do {
         return from var data in dataset
             group by data
@@ -268,7 +268,7 @@ public function removeDuplicates(record {}[] dataset) returns record {}[]|error 
 # + searchValue - A regular expression to match text that will be replaced.
 # + replaceValue - The value that will replace the matched text.
 # + return - A new dataset with the replaced text in the specified field.
-public function replaceText(record {}[] dataset, string fieldName, regexp:RegExp searchValue, string replaceValue) returns record {}[]|error {
+public function replaceText(record {}[] dataset, string fieldName, regexp:RegExp searchValue, string replaceValue) returns record {}[]|Error {
     if !dataset[0].hasKey(fieldName) {
         return error(string `Field ${fieldName} not found in the dataset`);
     }
@@ -293,7 +293,7 @@ public function replaceText(record {}[] dataset, string fieldName, regexp:RegExp
 #
 # + dataset - Array of records with possible extra spaces.
 # + return - A dataset where multiple spaces are replaced with a single space, and values are trimmed.
-public function handleWhiteSpaces(record {}[] dataset) returns record {}[]|error {
+public function handleWhiteSpaces(record {}[] dataset) returns record {}[]|Error {
     do {
         from record {} data in dataset
         from string key in data.keys()

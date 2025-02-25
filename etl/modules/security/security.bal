@@ -17,7 +17,7 @@ import ballerina/lang.array;
 # + fieldNames - An array of field names that should be encrypted.
 # + keyBase64 - The AES encryption key in Base64 format.
 # + return - A dataset with specified fields encrypted using AES-ECB and Base64-encoded.
-public function encryptData(record {}[] dataset, string[] fieldNames, string keyBase64) returns record {}[]|error {
+public function encryptData(record {}[] dataset, string[] fieldNames, string keyBase64) returns record {}[]|Error {
     if fieldNames.some(fieldName => !dataset[0].hasKey(fieldName)) {
         return error(string `Some fields not found in the dataset`);
     }
@@ -57,7 +57,7 @@ public function encryptData(record {}[] dataset, string[] fieldNames, string key
 # + fieldNames - An array of field names that should be decrypted.
 # + keyBase64 - The AES decryption key in Base64 format.
 # + return - A dataset with the specified fields decrypted.
-public function decryptData(record {}[] dataset, string[] fieldNames, string keyBase64) returns record {}[]|error {
+public function decryptData(record {}[] dataset, string[] fieldNames, string keyBase64) returns record {}[]|Error {
     if fieldNames.some(fieldName => !dataset[0].hasKey(fieldName)) {
         return error(string `Some fields not found in the dataset`);
     }
@@ -101,7 +101,7 @@ public function decryptData(record {}[] dataset, string[] fieldNames, string key
 # + fieldNames - An array of field names that should be masked.
 # + maskingCharacter - The character used to replace each character in the sensitive fields.
 # + return - A dataset where the specified fields are masked.
-public function maskSensitiveData(record {}[] dataset, string[] fieldNames, string:Char maskingCharacter) returns record {}[]|error {
+public function maskSensitiveData(record {}[] dataset, string[] fieldNames, string:Char maskingCharacter) returns record {}[]|Error {
     if fieldNames.some(fieldName => !dataset[0].hasKey(fieldName)) {
         return error(string `Some fields not found in the dataset`);
     }

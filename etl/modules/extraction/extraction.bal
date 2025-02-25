@@ -12,7 +12,7 @@ import ballerinax/openai.chat;
 # + fieldNames - Array of field names to map the extracted details.
 # + modelName - Name of the Open AI model
 # + return - A record with extracted details mapped to the specified field names or an error if extraction fails.
-public function extractFromUnstructuredData(string dataset, string[] fieldNames, string modelName = "gpt-4o") returns record {}|error {
+public function extractFromUnstructuredData(string dataset, string[] fieldNames, string modelName = "gpt-4o") returns record {}|Error {
     do {
 
         chat:CreateChatCompletionRequest request = {

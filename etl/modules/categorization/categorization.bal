@@ -14,7 +14,7 @@ import ballerinax/openai.chat;
 # + fieldName - Name of the numeric field to categorize.
 # + rangeArray - Array of float ranges specifying category boundaries.
 # + return - A nested array of categorized records or an error if categorization fails.
-public function categorizeNumeric(record {}[] dataset, string fieldName, float[][] rangeArray) returns record {}[][]|error {
+public function categorizeNumeric(record {}[] dataset, string fieldName, float[][] rangeArray) returns record {}[][]|Error {
     if !dataset[0].hasKey(fieldName) {
         return error(string `Field ${fieldName} not found in the dataset`);
     }
@@ -59,7 +59,7 @@ public function categorizeNumeric(record {}[] dataset, string fieldName, float[]
 # + fieldName - Name of the string field to categorize.
 # + regexArray - Array of regular expressions for matching categories.
 # + return - A nested array of categorized records or an error if categorization fails.
-public function categorizeRegexData(record {}[] dataset, string fieldName, regexp:RegExp[] regexArray) returns record {}[][]|error {
+public function categorizeRegexData(record {}[] dataset, string fieldName, regexp:RegExp[] regexArray) returns record {}[][]|Error {
     if !dataset[0].hasKey(fieldName) {
         return error(string `Field ${fieldName} not found in the dataset`);
     }
@@ -101,7 +101,7 @@ public function categorizeRegexData(record {}[] dataset, string fieldName, regex
 # + categories - Array of category names for classification.
 # + modelName - Name of the Open AI model
 # + return - A nested array of categorized records or an error if classification fails.
-function categorizeSemantic(record {}[] dataset, string fieldName, string[] categories, string modelName = "gpt-4o") returns record {}[][]|error {
+function categorizeSemantic(record {}[] dataset, string fieldName, string[] categories, string modelName = "gpt-4o") returns record {}[][]|Error {
     if !dataset[0].hasKey(fieldName) {
         return error(string `Field ${fieldName} not found in the dataset`);
     }
