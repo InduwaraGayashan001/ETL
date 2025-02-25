@@ -19,7 +19,10 @@ import ballerinax/openai.chat;
 # + isAscending - Boolean flag to determine sorting order (default: ascending).
 # + return - A sorted dataset based on the specified field.
 public function sort(record {}[] dataset, string fieldName, boolean isAscending = true) returns record {}[]|error {
-    do {
+    if !dataset[0].hasKey(fieldName) {
+        return error(string `Field ${fieldName} not found in the dataset`);
+    }
+    else {
         if isAscending {
             return from record {} data in dataset
                 order by data[fieldName].toString() ascending
@@ -30,8 +33,6 @@ public function sort(record {}[] dataset, string fieldName, boolean isAscending 
                 order by data[fieldName].toString() descending
                 select data;
         }
-    } on fail error e {
-        return e;
     }
 }
 
@@ -54,7 +55,10 @@ public function sort(record {}[] dataset, string fieldName, boolean isAscending 
 # + modelName - Name of the Open AI model
 # + return - An updated dataset with standardized string values or an error if the operation fails.
 public function standardizeData(record {}[] dataset, string fieldName, string searchValue, string modelName = "gpt-4o") returns record {}[]|error {
-    do {
+    if !dataset[0].hasKey(fieldName) {
+        return error(string `Field ${fieldName} not found in the dataset`);
+    }
+    else {
         chat:CreateChatCompletionRequest request = {
             model: modelName,
             messages: [
@@ -103,8 +107,6 @@ public function standardizeData(record {}[] dataset, string fieldName, string se
         chat:CreateChatCompletionResponse result = check chatClient->/chat/completions.post(request);
         string content = check result.choices[0].message?.content.ensureType();
         return check jsondata:parseAsType(check content.fromJsonString());
-    } on fail error e {
-        return e;
     }
 }
 
@@ -180,17 +182,18 @@ public function groupApproximateDuplicates(record {}[] dataset, string modelName
 # record {}[] updatedData = check cleaning:removeField(dataset, fieldName);
 # ```
 #
-# + dataSet - Array of records with fields to be removed.
+# + dataset - Array of records with fields to be removed.
 # + fieldName - The name of the field to remove from each record.
 # + return - A new dataset with the specified field removed from each record.
-public function removeField(record {}[] dataSet, string fieldName) returns record {}[]|error {
-    do {
-        return from record {} data in dataSet
+public function removeField(record {}[] dataset, string fieldName) returns record {}[]|error {
+    if !dataset[0].hasKey(fieldName) {
+        return error(string `Field ${fieldName} not found in the dataset`);
+    }
+    else {
+        return from record {} data in dataset
             let var val = data.remove(fieldName)
             where val != ()
             select data;
-    } on fail error e {
-        return e;
     }
 }
 
@@ -266,15 +269,16 @@ public function removeDuplicates(record {}[] dataset) returns record {}[]|error 
 # + replaceValue - The value that will replace the matched text.
 # + return - A new dataset with the replaced text in the specified field.
 public function replaceText(record {}[] dataset, string fieldName, regexp:RegExp searchValue, string replaceValue) returns record {}[]|error {
-    do {
+    if !dataset[0].hasKey(fieldName) {
+        return error(string `Field ${fieldName} not found in the dataset`);
+    }
+    else {
         from record {} data in dataset
         let string newData = searchValue.replace(data[fieldName].toString(), replaceValue)
         do {
             data[fieldName] = newData;
         };
         return dataset;
-    } on fail error e {
-        return e;
     }
 }
 
