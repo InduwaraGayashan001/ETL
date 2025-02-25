@@ -15,7 +15,10 @@ import ballerinax/openai.chat;
 # + rangeArray - Array of float ranges specifying category boundaries.
 # + return - A nested array of categorized records or an error if categorization fails.
 public function categorizeNumeric(record {}[] dataset, string fieldName, float[][] rangeArray) returns record {}[][]|error {
-    do {
+    if !dataset[0].hasKey(fieldName) {
+        return error(string `Field ${fieldName} not found in the dataset`);
+    }
+    else {
         record {}[][] categorizedData = [];
         foreach int i in 0 ... rangeArray.length() {
             categorizedData.push([]);
@@ -35,8 +38,6 @@ public function categorizeNumeric(record {}[] dataset, string fieldName, float[]
             }
         }
         return categorizedData;
-    } on fail error e {
-        return e;
     }
 }
 
@@ -59,7 +60,10 @@ public function categorizeNumeric(record {}[] dataset, string fieldName, float[]
 # + regexArray - Array of regular expressions for matching categories.
 # + return - A nested array of categorized records or an error if categorization fails.
 public function categorizeRegexData(record {}[] dataset, string fieldName, regexp:RegExp[] regexArray) returns record {}[][]|error {
-    do {
+    if !dataset[0].hasKey(fieldName) {
+        return error(string `Field ${fieldName} not found in the dataset`);
+    }
+    else {
         record {}[][] categorizedData = [];
         foreach int i in 0 ... regexArray.length() {
             categorizedData.push([]);
@@ -78,8 +82,6 @@ public function categorizeRegexData(record {}[] dataset, string fieldName, regex
             }
         }
         return categorizedData;
-    } on fail error e {
-        return e;
     }
 }
 
@@ -100,7 +102,10 @@ public function categorizeRegexData(record {}[] dataset, string fieldName, regex
 # + modelName - Name of the Open AI model
 # + return - A nested array of categorized records or an error if classification fails.
 function categorizeSemantic(record {}[] dataset, string fieldName, string[] categories, string modelName = "gpt-4o") returns record {}[][]|error {
-    do {
+    if !dataset[0].hasKey(fieldName) {
+        return error(string `Field ${fieldName} not found in the dataset`);
+    }
+    else {
         chat:CreateChatCompletionRequest request = {
             model: modelName,
             messages: [
@@ -140,7 +145,5 @@ function categorizeSemantic(record {}[] dataset, string fieldName, string[] cate
         chat:CreateChatCompletionResponse result = check chatClient->/chat/completions.post(request);
         string content = check result.choices[0].message?.content.ensureType();
         return check jsondata:parseAsType(check content.fromJsonString());
-    } on fail error e {
-        return e;
     }
 }
