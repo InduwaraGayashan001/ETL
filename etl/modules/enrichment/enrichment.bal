@@ -11,7 +11,10 @@
 # + primaryKey - The field used to match records between the datasets.
 # + return - A merged dataset with updated records or an error if merging fails.
 public function joinData(record {}[] dataset1, record {}[] dataset2, string primaryKey) returns record {}[]|error {
-    do {
+    if !dataset1[0].hasKey(primaryKey) || !dataset2[0].hasKey(primaryKey) {
+        return error(string `Primary key ${primaryKey} not found in one or both datasets`);
+    }
+    else {
         record {}[] updatedCustomers = [];
         record {}[][] similarCustomers = from record {} data1 in dataset1
             join record {} data2 in dataset2 on data1[primaryKey] equals data2[primaryKey]
@@ -23,8 +26,6 @@ public function joinData(record {}[] dataset1, record {}[] dataset2, string prim
             updatedCustomers.push(similarCustomer[0]);
         }
         return updatedCustomers;
-    } on fail error e {
-        return e;
     }
 }
 
@@ -40,11 +41,12 @@ public function joinData(record {}[] dataset1, record {}[] dataset2, string prim
 # + datasets - An array of datasets, where each dataset is an array of records.
 # + return - A single merged dataset containing all records or an error if merging fails.
 public function mergeData(record {}[][] datasets) returns record {}[]|error {
-    do {
+    if datasets.some(dataset => dataset[0].keys() != datasets[0][0].keys()) {
+        return error("Datasets have different schemas");
+    }
+    else {
         return from record {}[] dataSet in datasets
             from record {} data in dataSet
             select data;
-    } on fail error e {
-        return e;
     }
 }
