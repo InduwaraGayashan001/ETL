@@ -24,7 +24,7 @@ public function main() returns error? {
     // Remove duplicate records
     record {}[] uniqueCustomerData = check cleaning:removeDuplicates(nonNullCustomerData);
 
-    // Sort customer records by age
+    // Sort customer records by name
     record {}[] sortedCustomerData = check cleaning:sort(uniqueCustomerData, "name");
 
     // Format phone numbers by replacing leading zeros with the country code "+94"
