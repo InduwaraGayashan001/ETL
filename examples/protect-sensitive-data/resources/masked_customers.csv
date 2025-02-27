@@ -1,11 +1,11 @@
-name,city,phone,age,ssn,email
-John,Austin,(555) 555-7873,18,xxxxxxxxxxx,xxxxxxxxxxxxxxxx
-Nick,New York,(555) 555-8823,25,xxxxxxxxxxx,xxxxxxxxxxxxxxxx
-Paul,Sydney,(555) 555-9032,35,xxxxxxxxxxx,xxxxxxxxxxxxxxxx
-Jo,Austin,(555) 555-9120,45,xxxxxxxxxxx,xxxxxxxxxxxxxx
-Larry,Chicago,(555) 555-3022,23,xxxxxxxxxxx,xxxxxxxxxxxxxxxxx
-James,Portland,(555) 555-3299,23,xxxxxxxxxxx,xxxxxxxxxxxxxxxxx
-Smith,Denver,(555) 555-2313,17,xxxxxxxxxxx,xxxxxxxxxxxxxxxxx
-Rob,Boston,(555) 555-3124,90,xxxxxxxxxxx,xxxxxxxxxxxxxxx
-Kate,Dallas,(555) 555-3214,40,xxxxxxxxxxx,xxxxxxxxxxxxxxxx
-Tim,Miami,(555) 555-3123,50,xxxxxxxxxxx,xxxxxxxxxxxxxxx
+customerId,name,city,phone,age,ssn,email
+C01,xxxx,Austin,xxxxxxxxxxx,18,xxxxxxxxx,xxxxxxxxxxxxxxxxx
+C02,xxxx,New York,xxxxxxxxxxx,25,xxxxxxxxx,xxxxxxxxxxxxxxxxx
+C03,xxxx,Sydney,xxxxxxxxxxx,35,xxxxxxxxx,xxxxxxxxxxxxxxxxx
+C04,xx,Austin,xxxxxxxxxxx,45,xxxxxxxxx,xxxxxxxxxxxxxxxxx
+C05,xxxxx,Chicago,xxxxxxxxxxx,23,xxxxxxxxx,xxxxxxxxxxxxxxxxxx
+C06,xxxxx,Portland,xxxxxxxxxxx,23,xxxxxxxxx,xxxxxxxxxxxxxxxxxx
+C07,xxxxx,Denver,xxxxxxxxxxx,17,xxxxxxxxx,xxxxxxxxxxxxxxxxxxx
+C08,xxx,Boston,xxxxxxxxxxx,90,xxxxxxxxx,xxxxxxxxxxxxxxxx
+C09,xxxx,Dallas,xxxxxxxxxxx,40,xxxxxxxxx,xxxxxxxxxxxxxxxxx
+C10,xxx,Miami,xxxxxxxxxxx,50,xxxxxxxxx,xxxxxxxxxxxxxxx

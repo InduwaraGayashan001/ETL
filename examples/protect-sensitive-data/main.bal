@@ -4,6 +4,7 @@ import induwaragm/etl.security;
 configurable string key =?;
 
 type Customer record {
+    string customerId;
     string name;
     string city;
     string phone;
@@ -13,6 +14,7 @@ type Customer record {
 };
 
 type EncryptedCustomer record {
+    string customerId;
     string name;
     string city;
     string phone;
@@ -33,7 +35,7 @@ public function main() returns error? {
     check io:fileWriteCsv("./resources/decrypted_customers.csv", decryptedData);
 
     // Mask sensitive data
-    record{}[] maskedCustomers = check security:maskSensitiveData(customers,["ssn","email"], "x");
+    record{}[] maskedCustomers = check security:maskSensitiveData(customers,"x");
     check io:fileWriteCsv("./resources/masked_customers.csv", maskedCustomers);
 
 }
