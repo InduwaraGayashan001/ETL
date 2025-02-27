@@ -1,5 +1,8 @@
 import ballerina/crypto;
 import ballerina/lang.array;
+import ballerinax/openai.chat;
+import ballerina/data.jsondata;
+
 
 # Encrypts specific fields of a dataset using AES-ECB encryption with a given Base64-encoded key.
 #
@@ -82,43 +85,69 @@ public function decryptData(record {}[] dataset, string[] fieldNames, string key
     }
 }
 
-# Masks specific fields of a dataset by replacing each character with a specified masking character.
+# Masks specified fields of a dataset by replacing each character in the sensitive fields with a default masking character.
 #
-# This function iterates through the dataset and replaces all characters (including spaces) in the specified fields
-# with the given masking character.
+# This function sends a request to the GPT-4 API to identify fields in the dataset that contain Personally Identifiable Information (PII),
+# and replaces all characters in those fields with the default masking character 'X'.
 #
 # ```ballerina
 # record {}[] dataset = [
 #     { "id": 1, "name": "John Doe", "email": "john@example.com" },
 #     { "id": 2, "name": "Jane Smith", "email": "jane@example.com" }
 # ];
-# string[] fieldNames = ["name", "email"];
-# string:Char maskingCharacter = "X";
-# record {}[] maskedData = check security:maskSensitiveData(dataset, fieldNames, maskingCharacter);
+# record {}[] maskedData = check security:maskSensitiveData(dataset);
 # ```
 #
 # + dataset - The dataset containing records where sensitive fields should be masked.
-# + fieldNames - An array of field names that should be masked.
-# + maskingCharacter - The character used to replace each character in the sensitive fields.
-# + return - A dataset where the specified fields are masked.
-public function maskSensitiveData(record {}[] dataset, string[] fieldNames, string:Char maskingCharacter) returns record {}[]|Error {
-    if fieldNames.some(fieldName => !dataset[0].hasKey(fieldName)) {
-        return error(string `Some fields not found in the dataset`);
-    }
-    else {
-        record {}[] maskedDataset = [];
-        foreach record {} data in dataset {
-            record {} maskedData = {};
-            foreach string key in data.keys() {
-                if fieldNames.some(element => element == key) {
-                    maskedData[key] = re `\S|\s`.replaceAll(data[key].toString(), maskingCharacter);
-                } else {
-                    maskedData[key] = data[key];
+# + modelName - The name of the GPT model to use for identifying PII. Default is "gpt-4o".
+# + maskingCharacter - The character to use for masking sensitive fields. Default is 'X'.
+# + return - A dataset where the specified fields containing PII are masked with the given masking character.
+public function maskSensitiveData(record {}[] dataset, string:Char maskingCharacter = "X", string modelName = "gpt-4o") returns record {}[]|Error {
+    do{
+        chat:CreateChatCompletionRequest request = {
+            model: modelName,
+            messages: [
+                {
+                    "role": "user",
+                    "content": string ` Personally Identifiable Information (PII) includes any data that can be used to identify an individual, either on its own or when combined with other information. Examples of PII include:
+                                            -Names: Full name, maiden name, alias
+                                            -Addresses: Street, email
+                                            -Phone numbers: Mobile, personal, business
+                                            -Identifiers: SSN, passport number, driver's license
+                                            -Biometric data: Fingerprints, retina scan, voice signature
+                                            -Asset information: IP address, MAC address
+                                            -Personal features: Photographs, x-rays
+                                            -Information about owned property: Vehicle registration number
+                                            -Other information: Date of birth, place of birth, race, religion, employment, medical, education, financial details
+                                        Under GDPR, additional personal data includes online identifiers like IP addresses, cookie IDs, and de-identified data that can be re-identified.
+                                        Non-PII includes information that can't identify an individual, such as anonymized data or a company registration number.
+                                        Note: All personal data can be PII, but not all PII is personal data under certain legal frameworks like GDPR.
+                    
+                                        Identify the fields with Personally Identifiable Information (PII) in the following dataset and mask them with the character ${maskingCharacter} with each character replaced.:
+                                        - Dataset: ${dataset.toString()}
+                                        Return only the masked dataset as an array of json without any formatting .  
+                                        Do not include any additional text, explanations, or variations
+                                        
+                                        Example:
+                                        -Input;
+                                        [{ "id": 1, "name": "John Doe", "email": "john@example.com" },
+                                        { "id": 2, "name": "Jane Smith", "email": "jane@example.com" },
+                                        { "id": 3, "name": "Alice", "email": "alice@example.com" }]
+                                        -Output:
+                                        [{ "id": 1, "name": "XXXX XXX", "email": XXXXXXXXXXXXXXXX" },
+                                        { "id": 2, "name": "XXXX XXXXX", "email": XXXXXXXXXXXXXXXX" },
+                                        { "id": 3, "name": "XXXXX", "email": XXXXXXXXXXXXXXXXX" }]`                                    
                 }
-            }
-            maskedDataset.push(maskedData);
-        }
-        return maskedDataset;
+            ]
+        };
+
+        chat:CreateChatCompletionResponse result = check chatClient->/chat/completions.post(request);
+        string content = check result.choices[0].message?.content.ensureType();
+        return check jsondata:parseAsType(check content.fromJsonString());
+
+    }on fail error e{
+        return e;
     }
+    
 }
 
