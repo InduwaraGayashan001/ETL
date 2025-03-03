@@ -37,14 +37,16 @@ function testDecryptData() returns error? {
 @test:Config {}
 function testMaskSensitiveData() returns error? {
     record {}[] dataset = [
-        { "id": 1, "name": "John Doe", "email": "john@example.com" },
-        { "id": 2, "name": "Jane Smith", "email": "jane@example.com" },
-        { "id": 3, "name": "Alice", "email": "alice@example.com" }];
+        {"id": 1, "name": "John Doe", "email": "john@example.com"},
+        {"id": 2, "name": "Jane Smith", "email": "jane@example.com"},
+        {"id": 3, "name": "Alice", "email": "alice@example.com"}
+    ];
 
     record {}[] expectedOutput = [
-        { "id": 1, "name": "XXXX XXX", "email": "XXXXXXXXXXXXXXXX" },
-        { "id": 2, "name": "XXXX XXXXX", "email": "XXXXXXXXXXXXXXXX" },
-        { "id": 3, "name": "XXXXX", "email": "XXXXXXXXXXXXXXXXX" }];
+        {"id": 1, "name": "XXXX XXX", "email": "XXXXXXXXXXXXXXXX"},
+        {"id": 2, "name": "XXXX XXXXX", "email": "XXXXXXXXXXXXXXXX"},
+        {"id": 3, "name": "XXXXX", "email": "XXXXXXXXXXXXXXXXX"}
+    ];
 
     record {}[] maskedData = check maskSensitiveData(dataset);
     test:assertEquals(maskedData, expectedOutput);

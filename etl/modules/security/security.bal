@@ -1,8 +1,7 @@
 import ballerina/crypto;
+import ballerina/data.jsondata;
 import ballerina/lang.array;
 import ballerinax/openai.chat;
-import ballerina/data.jsondata;
-
 
 # Encrypts specific fields of a dataset using AES-ECB encryption with a given Base64-encoded key.
 #
@@ -103,7 +102,7 @@ public function decryptData(record {}[] dataset, string[] fieldNames, string key
 # + maskingCharacter - The character to use for masking sensitive fields. Default is 'X'.
 # + return - A dataset where the specified fields containing PII are masked with the given masking character.
 public function maskSensitiveData(record {}[] dataset, string:Char maskingCharacter = "X", string modelName = "gpt-4o") returns record {}[]|Error {
-    do{
+    do {
         chat:CreateChatCompletionRequest request = {
             model: modelName,
             messages: [
@@ -136,7 +135,7 @@ public function maskSensitiveData(record {}[] dataset, string:Char maskingCharac
                                         -Output:
                                         [{ "id": 1, "name": "XXXX XXX", "email": XXXXXXXXXXXXXXXX" },
                                         { "id": 2, "name": "XXXX XXXXX", "email": XXXXXXXXXXXXXXXX" },
-                                        { "id": 3, "name": "XXXXX", "email": XXXXXXXXXXXXXXXXX" }]`                                    
+                                        { "id": 3, "name": "XXXXX", "email": XXXXXXXXXXXXXXXXX" }]`
                 }
             ]
         };
@@ -145,9 +144,9 @@ public function maskSensitiveData(record {}[] dataset, string:Char maskingCharac
         string content = check result.choices[0].message?.content.ensureType();
         return check jsondata:parseAsType(check content.fromJsonString());
 
-    }on fail error e{
+    } on fail error e {
         return e;
     }
-    
+
 }
 
