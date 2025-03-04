@@ -1,4 +1,5 @@
 import ballerina/io;
+
 import induwaragm/etl.cleaning;
 
 type Customer record {
@@ -14,7 +15,7 @@ public function main() returns error? {
     cleaning:DuplicateGroupingResult groupingResult = check cleaning:groupApproximateDuplicates(customers);
     io:println(`Result: ${groupingResult}${"\n"}`);
     check io:fileWriteCsv("./resources/unique_customers.csv", groupingResult.uniqueRecords);
-    foreach int i in 0...groupingResult.duplicateGroups.length()-1{
+    foreach int i in 0 ... groupingResult.duplicateGroups.length() - 1 {
         check io:fileWriteCsv(string `./resources/similar_customers_${i}.csv`, groupingResult.duplicateGroups[i]);
-    }  
+    }
 }

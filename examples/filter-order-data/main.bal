@@ -1,4 +1,5 @@
 import ballerina/io;
+
 import induwaragm/etl.filtering;
 
 type Order record {
@@ -16,7 +17,7 @@ public function main() returns error? {
     float value = 100.0;
 
     // Filter orders based on the price being greater than 100
-    [record {}[] , record {}[] ][expensiveOrders,cheapOrders] = check filtering:filterDataByRelativeExp(rawOrderData, fieldName, filtering:GREATER_THAN, value);
+    [record {}[], record {}[]] [expensiveOrders, cheapOrders] = check filtering:filterDataByRelativeExp(rawOrderData, fieldName, filtering:GREATER_THAN, value);
 
     // Write the filtered data (expensive orders) to a new CSV file
     check io:fileWriteCsv("./resources/expensive_orders.csv", expensiveOrders);

@@ -1,4 +1,5 @@
 import ballerina/io;
+
 import induwaragm/etl.cleaning;
 
 type Customer record {|

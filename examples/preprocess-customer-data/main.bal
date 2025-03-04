@@ -1,4 +1,5 @@
 import ballerina/io;
+
 import induwaragm/etl.cleaning;
 
 type Customer record {
@@ -13,7 +14,7 @@ public function main() returns error? {
     Customer[] rawCustomerData = check io:fileReadCsv("./resources/customer_data.csv");
 
     // Remove age field from the customer data
-    record{}[] cleanedCustomers = check cleaning:removeField(rawCustomerData,"age");
+    record {}[] cleanedCustomers = check cleaning:removeField(rawCustomerData, "age");
 
     // Trim white spaces in all fields
     record {}[] trimmedCustomerData = check cleaning:handleWhiteSpaces(cleanedCustomers);

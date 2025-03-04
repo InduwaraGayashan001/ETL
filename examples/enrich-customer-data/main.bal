@@ -1,4 +1,5 @@
 import ballerina/io;
+
 import induwaragm/etl.enrichment;
 
 type CustomerDetails record {
@@ -21,13 +22,13 @@ public function main() returns error? {
     CustomerDetails[] customerDetails2 = check io:fileReadCsv("./resources/customer_details2.csv");
 
     // Merge the two customer details arrays
-    record{}[] customerDetails = check enrichment:mergeData([customerDetails1,customerDetails2]);
+    record {}[] customerDetails = check enrichment:mergeData([customerDetails1, customerDetails2]);
 
     // Read contact details from the CSV file
     ContactDetails[] contactDetails = check io:fileReadCsv("./resources/contact_details.csv");
 
     // Join the customer and contact details on the "customerId" field
-    record{}[] customers = check enrichment:joinData(customerDetails, contactDetails, "customerId");
+    record {}[] customers = check enrichment:joinData(customerDetails, contactDetails, "customerId");
 
     // Write the enriched data to a new CSV file
     check io:fileWriteCsv("./resources/customer_data.csv", customers);
