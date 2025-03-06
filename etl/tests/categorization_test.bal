@@ -41,7 +41,7 @@ function testCategorizeRegexData() returns error? {
         [{"name": "John", "city": "Boston"}]
     ];
 
-    record {}[][] categorized = check categorizeRegexData(dataset, fieldName, regexArray);
+    record {}[][] categorized = check categorizeRegex(dataset, fieldName, regexArray);
     test:assertEquals(categorized, expected);
 }
 

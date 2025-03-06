@@ -12,7 +12,7 @@ import ballerinax/openai.chat;
 # ];
 # string[] fieldNames = ["name", "age"];
 # string keyBase64 = "aGVsbG9zZWNyZXRrZXkxMjM0NTY=";
-# record {}[] encryptedData = check security:encryptData(dataset, fieldNames, keyBase64);
+# record {}[] encryptedData = check etl:encryptData(dataset, fieldNames, keyBase64);
 # ```
 #
 # + dataset - The dataset containing records where specific fields need encryption.
@@ -52,7 +52,7 @@ public function encryptData(record {}[] dataset, string[] fieldNames, string key
 # ];
 # string[] fieldNames = ["name", "age"];
 # string keyBase64 = "aGVsbG9zZWNyZXRrZXkxMjM0NTY=";
-# record {}[] decryptedData = check security:decryptData(encryptedDataset, fieldNames, keyBase64);
+# record {}[] decryptedData = check etl:decryptData(encryptedDataset, fieldNames, keyBase64);
 # ```
 #
 # + dataset - The dataset containing records with Base64-encoded encrypted fields.
@@ -94,7 +94,7 @@ public function decryptData(record {}[] dataset, string[] fieldNames, string key
 #     { "id": 1, "name": "John Doe", "email": "john@example.com" },
 #     { "id": 2, "name": "Jane Smith", "email": "jane@example.com" }
 # ];
-# record {}[] maskedData = check security:maskSensitiveData(dataset);
+# record {}[] maskedData = check etl:maskSensitiveData(dataset);
 # ```
 #
 # + dataset - The dataset containing records where sensitive fields should be masked.
