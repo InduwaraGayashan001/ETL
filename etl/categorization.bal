@@ -101,7 +101,7 @@ public function categorizeRegex(record {}[] dataset, string fieldName, regexp:Re
 # + categories - Array of category names for classification.
 # + modelName - Name of the Open AI model
 # + return - A nested array of categorized records or an error if classification fails.
-function categorizeSemantic(record {}[] dataset, string fieldName, string[] categories, string modelName = "gpt-4o") returns record {}[][]|Error {
+public function categorizeSemantic(record {}[] dataset, string fieldName, string[] categories, string modelName = "gpt-4o") returns record {}[][]|Error {
     if !dataset[0].hasKey(fieldName) {
         return error(string `Field ${fieldName} not found in the dataset`);
     }
